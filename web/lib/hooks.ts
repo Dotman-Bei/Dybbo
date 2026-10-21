@@ -3,9 +3,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import type { Address } from "viem";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useGasPrice } from "wagmi";
 import { ownerOf } from "./chain";
-import { PREVIEW } from "./config";
+import { GAS_PRICE_FALLBACK, PREVIEW } from "./config";
 import { dybbo, type Status } from "./dybbo";
 
 export type OwnerRow = { id: number; owner: Address; ownerIsContract: boolean };
@@ -44,6 +44,12 @@ export function useActor() {
   const preview = useSyncExternalStore(noop, previewWallet, () => null);
   const actor = (address ?? (PREVIEW ? preview : null)) as Address | null;
   return { actor, connected: isConnected, wrongChain: isConnected && chainId !== 143, isPreviewWallet: !address && !!actor };
+}
+
+/** The live gas price, or the measured one while it loads or in preview. */
+export function useGasPriceWei(): bigint {
+  const { data } = useGasPrice({ query: { refetchInterval: 30_000 } });
+  return data ?? GAS_PRICE_FALLBACK;
 }
 
 export function useMonBalance(addr: Address | null) {

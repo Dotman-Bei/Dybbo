@@ -32,6 +32,18 @@ export const MARK_TTL = 24 * 60 * 60;
 export const MARKS_PER_TOKEN = 8;
 export const RECENT = 64;
 
+/**
+ * Gas measured on Monad mainnet (contracts/gas/monad-gas.json, fresh storage, so the worst case).
+ * Monad charges the gas limit, and the app sets the limit to the estimate × 1.2.
+ */
+export const GAS = { possess: 341_268, haunt: 271_651, claim: 155_050, setTerms: 72_462 } as const;
+export const GAS_LIMIT_FACTOR = 1.2;
+export const GAS_PRICE_FALLBACK = 102n * 10n ** 9n; // wei per gas measured on 2026-10-21
+
+/** MON a write costs in gas at a given gas price, with the app's limit factor applied. */
+export const gasCost = (gas: number, gasPrice: bigint = GAS_PRICE_FALLBACK) =>
+  BigInt(Math.ceil(gas * GAS_LIMIT_FACTOR)) * gasPrice;
+
 export const MARKS = [
   { id: 0, name: "Boo", line: "A sheet with two holes. The classic." },
   { id: 1, name: "Slime", line: "Lime ooze down the side of the card." },

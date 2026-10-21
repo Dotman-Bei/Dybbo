@@ -8,10 +8,10 @@ import { HauntPanel, useNames } from "@/components/haunt-panel";
 import { MarkChip } from "@/components/mark-row";
 import { LeaseBar } from "@/components/lease-bar";
 import { busyLabel, Revert, TxNote, useTx } from "@/components/tx";
-import { DEFAULT_PRICE, MAX_MINUTES, MAX_PRICE, MIN_MINUTES, MIN_PRICE, PREVIEW, WEI, explorerAddress } from "@/lib/config";
+import { DEFAULT_PRICE, GAS, MAX_MINUTES, MAX_PRICE, MIN_MINUTES, MIN_PRICE, WEI, explorerAddress, gasCost } from "@/lib/config";
 import { dybbo, type DybboErrorName } from "@/lib/dybbo";
 import { ago, clock, mon, price, shortAddr, timeOfDay } from "@/lib/format";
-import { useActivity, useActor, useEscrow, useLease, useMarks, useMonBalance, useNow, useOwner, useStatus, useTerms } from "@/lib/hooks";
+import { useActivity, useActor, useEscrow, useLease, useMarks, useGasPriceWei, useMonBalance, useNow, useOwner, useStatus, useTerms } from "@/lib/hooks";
 import type { Chog } from "@/lib/chogs";
 
 const lc = (a?: string | null) => (a ?? "").toLowerCase();
@@ -98,6 +98,8 @@ function LeaseCard({
   const terms = useTerms(id);
   const lease = useLease(id);
   const balance = useMonBalance(isPreviewWallet ? null : actor);
+  const gasPrice = useGasPriceWei();
+  const gas = gasCost(GAS.possess, gasPrice);
   const [minutes, setMinutes] = useState(Math.min(MAX_MINUTES, Math.max(MIN_MINUTES, Math.round(initialMinutes))));
   const tx = useTx();
   const s = status.data;
@@ -115,7 +117,7 @@ function LeaseCard({
     : state === "leased" ? (mine ? null : `Possessed until ${timeOfDay(s!.until)}.`)
     : isHolder ? "You hold this Chog. Haunt with it below instead."
     : !actor ? "Connect a wallet to possess."
-    : balance !== null && balance < fee ? `Your balance is ${mon(balance)} MON; this lease costs ${mon(fee)} MON.`
+    : balance !== null && balance < fee + gas ? `Your balance is ${mon(balance)} MON; this lease needs about ${mon(fee + gas, 3)} MON with gas.`
     : null;
 
   function possess() {
@@ -168,7 +170,8 @@ function LeaseCard({
           </div>
           <dl className="well">
             <div className="kv"><dt>Fee to #{n}&rsquo;s escrow</dt><dd className="num">{mon(fee)} MON</dd></div>
-            <div className="kv"><dt>Gas</dt><dd className="num"><span className="muted">{PREVIEW ? "none in preview" : "shown in your wallet"}</span></dd></div>
+            <div className="kv"><dt>Gas, at most</dt><dd className="num">≈ {mon(gas, 3)} MON</dd></div>
+            <div className="kv"><dt>Total</dt><dd className="num">≈ {mon(fee + gas, 3)} MON</dd></div>
             <div className="kv"><dt>Your balance</dt><dd className="num">{balance !== null ? `${mon(balance)} MON` : <span className="muted">{isPreviewWallet ? "preview wallet" : "—"}</span>}</dd></div>
           </dl>
         </>
