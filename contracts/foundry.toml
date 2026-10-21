@@ -8,6 +8,12 @@ optimizer = true
 optimizer_runs = 1000
 via_ir = false
 fs_permissions = [{ access = "read", path = "./out" }]
+# Fork tests read Monad mainnet and take minutes; run them with FOUNDRY_PROFILE=fork.
+no_match_contract = "Fork"
+
+[profile.fork]
+match_contract = "Fork"
+no_match_contract = "^$"
 
 [rpc_endpoints]
 monad = "https://rpc.monad.xyz"
