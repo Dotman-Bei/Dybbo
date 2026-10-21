@@ -1,0 +1,24 @@
+{
+  "measuredAt": "2026-10-21T15:03:04.614Z",
+  "network": "Monad mainnet (chainId 143), eth_estimateGas with state overrides",
+  "tokens": {
+    "source": 1,
+    "target": 3
+  },
+  "gasPriceWei": "102000000000",
+  "note": "Fresh storage, so first writes pay for state growth; later writes to the same slots cost less. Monad charges the gas limit, so the app sets limit = estimate × 1.2.",
+  "gas": {
+    "possess (5 min, first ever)": 341268,
+    "haunt (possessor)": 271651,
+    "haunt (holder mode)": 271603,
+    "claim": 155050,
+    "setTerms": 72462
+  },
+  "costMonAtGasPrice": {
+    "possess (5 min, first ever)": "0.041771244",
+    "haunt (possessor)": "0.033250164",
+    "haunt (holder mode)": "0.033244248",
+    "claim": "0.01897812",
+    "setTerms": "0.00886941"
+  }
+}
