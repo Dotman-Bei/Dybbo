@@ -1,0 +1,75 @@
+/* Dybbo — shared foundation. Tokens from docs/FRONTEND.md §2. */
+
+@font-face { font-family: "Chillax"; src: url("/fonts/chillax-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Chillax"; src: url("/fonts/chillax-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Chillax"; src: url("/fonts/chillax-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Chillax"; src: url("/fonts/chillax-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
+:root {
+  /* home fields */
+  --orange: #ff8126;
+  --orange-step: #ff9a52;
+  --orange-deep: #7a3300;
+  --night: #161615;
+  --night-step: #242422;
+  --night-ink: #f2f2f2;
+  --ink: #111111;
+  --brown: #5c2a05;
+
+  /* app */
+  --ground: #f6f6f4;
+  --surface: #ffffff;
+  --raised: #f3f3f1;
+  --active: #ececea;
+  --border: #e8e8e6;
+  --rule: #f1f1ef;
+  --control: #d1d5db;
+  --text: #111111;
+  --muted: #5f6368;
+  --faint: #6b6b6b;
+  --data: #e8650d;
+  --positive: #247b50;
+  --negative: #c4242a;
+  --pill-positive-bg: #dcfae5; --pill-positive-ink: #04250e;
+  --pill-negative-bg: #ffedea; --pill-negative-ink: #831c1e;
+  --notice-bg: #f3f3f1; --notice-border: #e8e8e6; --notice-ink: #3d3d3d;
+  --open-bg: #ffe9d6; --open-ink: #7a3300;
+  --held-bg: #111111; --held-ink: #ff8126;
+  --closed-bg: #ececea; --closed-ink: #3d3d3d;
+  --chip-bg: #f1f1ef; --chip-ink: #111111;
+
+  --font: "Chillax", ui-rounded, system-ui, sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --t-press: 140ms;
+  --t-hover: 180ms;
+  --t-ui: 240ms;
+  --t-reveal: 800ms;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  line-height: 1.5;
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4, p, figure, blockquote, ul, ol, dl, dd { margin: 0; }
+ul[class], ol[class] { padding: 0; list-style: none; }
+img, video, svg, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; }
+h1, h2, h3 { font-weight: inherit; text-wrap: balance; hyphens: none; }
+p { text-wrap: pretty; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.num { font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.art-missing { display: grid; place-items: center; width: 100%; height: 100%; aspect-ratio: 1; background: #ececea; color: #5f6368; font-weight: 600; font-size: 14px; }
