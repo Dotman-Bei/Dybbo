@@ -1,0 +1,14 @@
+.steps { display: flex; flex-direction: column; counter-reset: step; }
+.step { position: relative; padding: 14px 0 14px 44px; counter-increment: step; }
+.step + .step { border-top: 1px solid var(--rule); }
+.step::before { content: counter(step); position: absolute; left: 0; top: 14px; width: 28px; height: 28px; border-radius: 50%; background: var(--held-bg); color: var(--held-ink); display: grid; place-items: center; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums; }
+.step__what { font-size: 16px; line-height: 24px; font-weight: 600; }
+.step__how { color: var(--muted); margin-top: 2px; }
+.step__expect { margin-top: 6px; font-weight: 500; }
+.step__expect .label { margin-right: 6px; }
+.proves { align-items: flex-start; padding: 10px 0; }
+.proves .pill { margin-top: 0; }
+.judges { align-items: stretch; }
+.steps-card { display: flex; flex-direction: column; }
+.steps__go { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 700px) { .steps__go .btn { width: 100%; } }
