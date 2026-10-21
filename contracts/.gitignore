@@ -1,0 +1,5 @@
+# Foundry build output and local broadcast logs
+/out/
+/cache/
+/broadcast/*/31337/
+.env
