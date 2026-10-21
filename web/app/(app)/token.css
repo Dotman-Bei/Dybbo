@@ -1,0 +1,99 @@
+/* Token page and session. Desktop: 560 + 16 + 576 = 1,152. */
+
+.token { display: grid; grid-template-columns: minmax(0, 560fr) minmax(0, 576fr); gap: 16px; align-items: start; }
+.token__art { aspect-ratio: 1; border-radius: 20px; overflow: clip; background: var(--raised); }
+.token__art img { width: 100%; height: 100%; object-fit: cover; }
+.traits { columns: 2; column-gap: 24px; }
+.traits .kv { break-inside: avoid; }
+.traits .kv + .kv { border-top: 0; }
+.traits .kv { border-bottom: 1px solid var(--border); }
+
+.lease { display: flex; flex-direction: column; gap: 14px; }
+.lease .card__head { margin-bottom: 0; }
+.lease__src { display: block; font-size: 12px; line-height: 16px; color: var(--muted); font-weight: 500; letter-spacing: 0; margin-top: 2px; }
+.lease__who { color: var(--muted); }
+.lease__why { color: var(--muted); font-weight: 500; }
+.lease__fine { color: var(--muted); font-size: 12px; line-height: 16px; }
+.stepper { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.stepper .label { font-size: 14px; color: var(--text); font-weight: 600; }
+.stepper__ctl { display: flex; align-items: center; gap: 8px; }
+.stepper__ctl .btn { width: 36px; padding: 0; font-size: 18px; }
+.stepper__val { min-width: 40px; text-align: center; font-size: 24px; line-height: 30px; font-weight: 600; }
+@media (max-width: 700px) { .stepper__ctl .btn { width: 44px; } }
+
+.leasebar { height: 12px; border-radius: 999px; background: var(--raised); overflow: clip; }
+.leasebar__fill { height: 100%; background: var(--data); transform-origin: left center; border-radius: 999px; }
+
+.escrow__note { color: var(--muted); margin: 4px 0 12px; }
+.marks__given { margin: 16px 0 8px; }
+.neg { color: var(--negative); font-weight: 600; }
+
+.revert { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; animation: arrive var(--t-ui) var(--ease-out); }
+.txnote { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; animation: arrive var(--t-ui) var(--ease-out); }
+@keyframes arrive { from { opacity: 0; transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .revert, .txnote { animation: none; } }
+
+.terms { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.terms__field { display: flex; flex-direction: column; gap: 8px; }
+.terms__field .field { width: 160px; }
+.toggle { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 500; }
+.toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.toggle__track { width: 33px; height: 20px; border-radius: 999px; background: var(--control); position: relative; transition: background-color var(--t-hover) ease; flex: none; }
+.toggle__track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform var(--t-ui) var(--ease-out); }
+.toggle input:checked + .toggle__track { background: var(--text); }
+.toggle input:checked + .toggle__track::after { transform: translateX(13px); }
+.toggle input:focus-visible + .toggle__track { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+/* haunt panel */
+.haunt { display: flex; flex-direction: column; gap: 14px; }
+.haunt .card__head { margin-bottom: 0; }
+.haunt__tabs { align-self: flex-start; }
+.haunt__find { display: flex; gap: 8px; }
+.haunt__find .field { width: 140px; }
+.haunt__back { display: flex; flex-wrap: wrap; gap: 8px; }
+.haunt__back .btn[aria-pressed="true"] { border-color: var(--text); background: var(--active); }
+.haunt__target { display: flex; align-items: center; gap: 12px; min-height: 64px; }
+.haunt__art { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex: none; }
+.haunt__tname { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.haunt__marks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.markpick { background: var(--chip-bg); color: var(--chip-ink); display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 14px; font-weight: 600; font-size: 15px; border: 2px solid transparent; transition: border-color var(--t-hover) ease, transform var(--t-press) var(--ease-out); }
+.markpick:active { transform: scale(0.97); }
+.markpick[aria-checked="true"] { border-color: var(--text); }
+@media (hover: hover) and (pointer: fine) { .markpick:hover { border-color: var(--control); } .markpick[aria-checked="true"]:hover { border-color: var(--text); } }
+.haunt__why { color: var(--muted); font-weight: 500; }
+
+/* session */
+.session { display: grid; grid-template-columns: minmax(0, 760fr) minmax(0, 376fr); gap: 16px; align-items: start; }
+.leasecard { display: flex; flex-direction: column; gap: 14px; }
+.leasecard__top { display: flex; align-items: center; gap: 16px; }
+.leasecard__art { width: 88px; height: 88px; border-radius: 14px; object-fit: cover; flex: none; }
+.leasecard .leasebar { height: 16px; }
+.leasecard--over .leasebar__fill, .leasecard--sold .leasebar__fill { background: var(--control); }
+.after { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
+.after__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.takeit { display: flex; flex-direction: column; gap: 12px; }
+.takeit .card__head { margin-bottom: 0; }
+.sendreal summary { list-style: none; cursor: pointer; display: inline-flex; }
+.sendreal summary::-webkit-details-marker { display: none; }
+.sendreal[open] { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+
+.strip { display: none; }
+
+@media (max-width: 960px) {
+  .token, .session { grid-template-columns: minmax(0, 1fr); }
+  .token > .stack { display: contents; }
+  .o-art { order: 1; }
+  .o-lease { order: 2; }
+  .token > .stack > * { order: 3; }
+  .o-traits { order: 4; }
+  .traits { columns: 1; }
+  .strip {
+    display: flex; align-items: center; gap: 12px;
+    position: sticky; top: 48px; z-index: 10;
+    margin: -8px -16px 16px; padding: 10px 16px;
+    background: var(--ground); border-bottom: 1px solid var(--border);
+  }
+  .strip > span { font-size: 22px; font-weight: 600; min-width: 56px; }
+  .strip .leasebar { flex: 1; }
+  .strip--over .leasebar__fill { background: var(--control); }
+}
