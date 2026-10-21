@@ -1,6 +1,6 @@
 # Foundry build output and local broadcast logs
 /out/
 /cache/
-/broadcast/*/31337/
 .env
-/broadcast/**/dry-run/
+# Broadcast logs: local forks reuse chainId 143, so the mainnet address is recorded in README instead.
+/broadcast/
