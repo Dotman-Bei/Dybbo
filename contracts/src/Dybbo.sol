@@ -17,6 +17,11 @@ contract Dybbo {
     uint256 public constant SUPPLY = 1969;
     uint256 public constant MIN_MINUTES = 1;
     uint256 public constant MAX_MINUTES = 10;
+    uint256 public constant HAUNT_COOLDOWN = 15 seconds;
+    uint256 public constant TARGET_REPEAT_WINDOW = 24 hours;
+    uint256 public constant MARK_TTL = 24 hours;
+    uint256 public constant MARKS_PER_TOKEN = 8;
+    uint256 public constant MARK_COUNT = 3;
 
     IChog public immutable CHOG;
     uint256 public immutable DEFAULT_PRICE;
@@ -35,10 +40,16 @@ contract Dybbo {
     error DurationOutOfRange();
     error PriceOutOfRange();
     error NotOwner();
+    error NotController();
+    error SameToken();
+    error Cooldown();
+    error TargetRepeat();
+    error BadMark();
 
     // ---------------------------------------------------------------- events (PRD §8.6)
 
     event Possessed(uint256 indexed id, address indexed possessor, address ownerAtStart, uint256 until, uint256 fee);
+    event Haunted(uint256 indexed sourceId, uint256 indexed targetId, address indexed actor, uint8 markId, bool byPossessor);
     event TermsSet(uint256 indexed id, address indexed holder, uint256 pricePerMinute, bool closed);
 
     // ---------------------------------------------------------------- storage (PRD §8.3)
@@ -62,6 +73,33 @@ contract Dybbo {
     mapping(uint256 => Lease) internal _lease;
     mapping(uint256 => Terms) internal _terms;
     mapping(uint256 => uint256) internal _escrow;
+
+    /// One slot per mark; each target keeps its last eight in a ring.
+    struct Mark {
+        uint16 sourceId;
+        address actor;
+        uint8 markId;
+        uint40 at;
+        bool byPossessor;
+    }
+
+    mapping(uint256 => Mark[8]) internal _marks;
+    mapping(uint256 => uint8) internal _markHead;
+    mapping(uint256 => uint40) public lastHauntAt;
+    mapping(uint256 => mapping(uint256 => uint40)) internal _lastPairAt;
+
+    /// Reason codes for `canHaunt`, in the order the frontend decodes them.
+    uint8 internal constant OK = 0;
+    uint8 internal constant R_TOKEN_OUT_OF_RANGE = 1;
+    uint8 internal constant R_CLOSED = 2;
+    uint8 internal constant R_LEASE_ACTIVE = 3;
+    uint8 internal constant R_LEASE_EXPIRED = 4;
+    uint8 internal constant R_OWNER_CHANGED = 5;
+    uint8 internal constant R_NOT_CONTROLLER = 11;
+    uint8 internal constant R_SAME_TOKEN = 12;
+    uint8 internal constant R_COOLDOWN = 13;
+    uint8 internal constant R_TARGET_REPEAT = 14;
+    uint8 internal constant R_BAD_MARK = 15;
 
     constructor(IChog chog, uint256 defaultPrice, uint256 minPrice, uint256 maxPrice) {
         require(minPrice > 0 && minPrice <= defaultPrice && defaultPrice <= maxPrice && maxPrice <= type(uint64).max);
@@ -90,6 +128,30 @@ contract Dybbo {
         _escrow[id] += msg.value;
 
         emit Possessed(id, msg.sender, holder, until, msg.value);
+    }
+
+    // ---------------------------------------------------------------- haunt
+
+    /// @notice Leave mark `markId` on `targetId`, acting as `sourceId`. The possessor of a live lease acts
+    /// with it; with no live lease, its holder acts with it directly (holder mode).
+    function haunt(uint256 sourceId, uint256 targetId, uint8 markId) external {
+        (uint8 reason, bool byPossessor) = _checkHaunt(msg.sender, sourceId, targetId, markId);
+        if (reason != OK) _revertWith(reason);
+
+        uint40 at = uint40(block.timestamp);
+        uint8 head = _markHead[targetId];
+        _marks[targetId][head] = Mark(uint16(sourceId), msg.sender, markId, at, byPossessor);
+        _markHead[targetId] = uint8((head + 1) % MARKS_PER_TOKEN);
+        lastHauntAt[sourceId] = at;
+        _lastPairAt[sourceId][targetId] = at;
+
+        emit Haunted(sourceId, targetId, msg.sender, markId, byPossessor);
+    }
+
+    /// @notice Whether `caller` could haunt `targetId` with `sourceId` right now, and if not, why.
+    function canHaunt(address caller, uint256 sourceId, uint256 targetId) external view returns (bool ok, uint8 reason) {
+        (reason,) = _checkHaunt(caller, sourceId, targetId, 0);
+        return (reason == OK, reason);
     }
 
     // ---------------------------------------------------------------- holder terms
@@ -129,10 +191,67 @@ contract Dybbo {
         return _escrow[id];
     }
 
+    /// @notice Marks on `id` from the last 24 hours, at most eight, in ring order.
+    function marksOf(uint256 id) external view returns (Mark[] memory live) {
+        Mark[8] storage ring = _marks[id];
+        uint256 n;
+        for (uint256 i; i < MARKS_PER_TOKEN; ++i) {
+            if (ring[i].at != 0 && block.timestamp - ring[i].at < MARK_TTL) ++n;
+        }
+        live = new Mark[](n);
+        n = 0;
+        for (uint256 i; i < MARKS_PER_TOKEN; ++i) {
+            if (ring[i].at != 0 && block.timestamp - ring[i].at < MARK_TTL) live[n++] = ring[i];
+        }
+    }
+
     // ---------------------------------------------------------------- internals
 
     function _inRange(uint256 id) internal pure {
         if (id == 0 || id > SUPPLY) revert TokenOutOfRange();
+    }
+
+    /// Every rule a haunt must pass, in the order the errors are reported. Shared by `haunt` and `canHaunt`.
+    function _checkHaunt(address caller, uint256 sourceId, uint256 targetId, uint8 markId)
+        internal
+        view
+        returns (uint8 reason, bool byPossessor)
+    {
+        if (sourceId == 0 || sourceId > SUPPLY || targetId == 0 || targetId > SUPPLY) return (R_TOKEN_OUT_OF_RANGE, false);
+        address holder = CHOG.ownerOf(sourceId);
+        Lease storage l = _lease[sourceId];
+        if (l.possessor == caller && caller != address(0)) {
+            // Possessor: the lease must be live, checked against ownerOf in this same call.
+            if (holder != l.ownerAtStart) return (R_OWNER_CHANGED, true);
+            if (block.timestamp >= l.until) return (R_LEASE_EXPIRED, true);
+            byPossessor = true;
+        } else if (holder == caller) {
+            // Holder mode: only while nobody else holds a live lease on this Chog.
+            if (_active(l, holder)) return (R_LEASE_ACTIVE, false);
+        } else {
+            return (R_NOT_CONTROLLER, false);
+        }
+        if (sourceId == targetId) return (R_SAME_TOKEN, byPossessor);
+        if (markId >= MARK_COUNT) return (R_BAD_MARK, byPossessor);
+        (,bool targetClosed,) = _effectiveTerms(targetId, CHOG.ownerOf(targetId));
+        if (targetClosed) return (R_CLOSED, byPossessor);
+        if (block.timestamp - lastHauntAt[sourceId] < HAUNT_COOLDOWN) return (R_COOLDOWN, byPossessor);
+        uint40 pair = _lastPairAt[sourceId][targetId];
+        if (pair != 0 && block.timestamp - pair < TARGET_REPEAT_WINDOW) return (R_TARGET_REPEAT, byPossessor);
+        return (OK, byPossessor);
+    }
+
+    function _revertWith(uint8 reason) internal pure {
+        if (reason == R_TOKEN_OUT_OF_RANGE) revert TokenOutOfRange();
+        if (reason == R_CLOSED) revert Closed();
+        if (reason == R_LEASE_ACTIVE) revert LeaseActive();
+        if (reason == R_LEASE_EXPIRED) revert LeaseExpired();
+        if (reason == R_OWNER_CHANGED) revert OwnerChanged();
+        if (reason == R_NOT_CONTROLLER) revert NotController();
+        if (reason == R_SAME_TOKEN) revert SameToken();
+        if (reason == R_COOLDOWN) revert Cooldown();
+        if (reason == R_TARGET_REPEAT) revert TargetRepeat();
+        revert BadMark();
     }
 
     /// A lease is live while the clock has not reached `until` and the holder is the one it was paid to.
