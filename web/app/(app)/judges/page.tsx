@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CHOG_ADDRESS, DEFAULT_PRICE, DYBBO_ADDRESS, REPO_URL, VIDEO_URL, explorerAddress } from "@/lib/config";
-import { price } from "@/lib/format";
+import { CHOG_ADDRESS, DEFAULT_PRICE, DYBBO_ADDRESS, GAS, REPO_URL, VIDEO_URL, explorerAddress, gasCost } from "@/lib/config";
+import { mon, price } from "@/lib/format";
 import { SuggestedChog } from "./suggested";
 import "./judges.css";
 
 export const metadata: Metadata = { title: "Judge guide" };
 
+// What the tests below really cost: one 1-minute lease and one haunt, with gas at the measured price.
+// "Try to take it", the expired haunt and the three checks are simulations and cost nothing.
+const POSSESS_GAS = gasCost(GAS.possess);
+const HAUNT_GAS = gasCost(GAS.haunt);
+const TEST_TOTAL = DEFAULT_PRICE + POSSESS_GAS + HAUNT_GAS;
+const BUDGET = "0.1 MON";
+
 const STEPS: [string, string, string][] = [
-  ["Get a little MON on Monad mainnet", "Chain ID 143. 0.05 MON covers every test below.", "Your wallet shows Monad and a MON balance."],
-  ["Possess the suggested Chog for 1 minute", "Open its page, keep the minutes at 1, press Possess.", `A fee of ${price(DEFAULT_PRICE)} MON plus gas, then the timer starts.`],
+  ["Get a little MON on Monad mainnet", `Chain ID 143. ${BUDGET} covers every test below.`, "Your wallet shows Monad and a MON balance."],
+  ["Possess the suggested Chog for 1 minute", "Open its page, keep the minutes at 1, press Possess.", `A fee of ${price(DEFAULT_PRICE)} MON plus about ${mon(POSSESS_GAS, 3)} MON of gas, then the timer starts.`],
   ["Haunt any open Chog once", "In the session, keep the random target, pick Boo, Slime or Hex, press Haunt.", "The mark shows on the target's page, signed “by #…, possessed”."],
   ["Press Try to take it", "In the same session, on the right.", "The transfer reverts, and both approval reads say false or zero."],
   ["Wait for the timer, then Try one more haunt", "The button appears when the lease ends.", "Reverted: LeaseExpired."],
@@ -29,7 +36,7 @@ export default function JudgesPage() {
       <div className="title-row">
         <div>
           <h1>Judge guide</h1>
-          <p className="sub">No Chog needed. A Monad wallet with 0.05 MON covers every test, in under five minutes.</p>
+          <p className="sub">No Chog needed. A Monad wallet with {BUDGET} covers every test, in under five minutes.</p>
         </div>
         <div className="title-row__actions">
           <SuggestedChog />
@@ -63,10 +70,10 @@ export default function JudgesPage() {
               <h2 id="cost-h">What it costs</h2>
             </div>
             <dl className="well">
-              <div className="kv"><dt>Fee per minute</dt><dd className="num">{price(DEFAULT_PRICE)} MON</dd></div>
-              <div className="kv"><dt>Fee for the 1-minute test</dt><dd className="num">{price(DEFAULT_PRICE)} MON</dd></div>
-              <div className="kv"><dt>Gas per action</dt><dd className="muted">shown before you sign</dd></div>
-              <div className="kv"><dt>Goes to</dt><dd>The Chog&rsquo;s holder</dd></div>
+              <div className="kv"><dt>1-minute lease, to the holder</dt><dd className="num">{price(DEFAULT_PRICE)} MON</dd></div>
+              <div className="kv"><dt>Gas to possess, at most</dt><dd className="num">≈ {mon(POSSESS_GAS, 3)} MON</dd></div>
+              <div className="kv"><dt>Gas to haunt, at most</dt><dd className="num">≈ {mon(HAUNT_GAS, 3)} MON</dd></div>
+              <div className="kv"><dt>Every test</dt><dd className="num">≈ {mon(TEST_TOTAL, 3)} MON</dd></div>
             </dl>
           </section>
 
