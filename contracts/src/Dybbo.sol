@@ -45,11 +45,15 @@ contract Dybbo {
     error Cooldown();
     error TargetRepeat();
     error BadMark();
+    error NothingToClaim();
+    error Reentrancy();
+    error TransferFailed();
 
     // ---------------------------------------------------------------- events (PRD §8.6)
 
     event Possessed(uint256 indexed id, address indexed possessor, address ownerAtStart, uint256 until, uint256 fee);
     event Haunted(uint256 indexed sourceId, uint256 indexed targetId, address indexed actor, uint8 markId, bool byPossessor);
+    event Claimed(uint256 indexed id, address indexed to, uint256 amount);
     event TermsSet(uint256 indexed id, address indexed holder, uint256 pricePerMinute, bool closed);
 
     // ---------------------------------------------------------------- storage (PRD §8.3)
@@ -87,6 +91,15 @@ contract Dybbo {
     mapping(uint256 => uint8) internal _markHead;
     mapping(uint256 => uint40) public lastHauntAt;
     mapping(uint256 => mapping(uint256 => uint40)) internal _lastPairAt;
+
+    uint256 private _locked = 1;
+
+    modifier nonReentrant() {
+        if (_locked != 1) revert Reentrancy();
+        _locked = 2;
+        _;
+        _locked = 1;
+    }
 
     /// Reason codes for `canHaunt`, in the order the frontend decodes them.
     uint8 internal constant OK = 0;
@@ -152,6 +165,38 @@ contract Dybbo {
     function canHaunt(address caller, uint256 sourceId, uint256 targetId) external view returns (bool ok, uint8 reason) {
         (reason,) = _checkHaunt(caller, sourceId, targetId, 0);
         return (reason == OK, reason);
+    }
+
+    // ---------------------------------------------------------------- claims
+
+    /// @notice Pay `id`'s whole escrow to its current holder. Unclaimed fees follow the token.
+    function claim(uint256 id) external nonReentrant {
+        uint256 amount = _take(id);
+        if (amount == 0) revert NothingToClaim();
+        _pay(amount);
+    }
+
+    /// @notice Claim several Chogs in one call. The caller must hold every one of them.
+    function claimMany(uint256[] calldata ids) external nonReentrant {
+        uint256 total;
+        for (uint256 i; i < ids.length; ++i) total += _take(ids[i]);
+        if (total == 0) revert NothingToClaim();
+        _pay(total);
+    }
+
+    /// Checks the holder and zeroes the escrow before any MON moves.
+    function _take(uint256 id) internal returns (uint256 amount) {
+        _inRange(id);
+        if (CHOG.ownerOf(id) != msg.sender) revert NotOwner();
+        amount = _escrow[id];
+        if (amount == 0) return 0;
+        _escrow[id] = 0;
+        emit Claimed(id, msg.sender, amount);
+    }
+
+    function _pay(uint256 amount) internal {
+        (bool ok,) = msg.sender.call{value: amount}("");
+        if (!ok) revert TransferFailed();
     }
 
     // ---------------------------------------------------------------- holder terms
