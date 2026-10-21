@@ -33,14 +33,22 @@ export class LiveClient implements DybboClient {
 
   async status(owners: { id: number; owner: Address; ownerIsContract: boolean }[]): Promise<Status[]> {
     if (!owners.length) return [];
-    const from = owners[0].id;
-    const to = owners[owners.length - 1].id;
-    const rows = await read<{ leased: boolean; until: number; possessor: Address; price: bigint; closed: boolean; defaults: boolean; escrow: bigint }[]>("statusBatch", [BigInt(from), BigInt(to)]);
-    const byId = new Map(owners.map((o) => [o.id, o]));
-    return rows.map((r, i) => {
-      const id = from + i;
+    // statusBatch reads a contiguous range; a holder's Chogs are scattered, so read each run on its own.
+    const ids = owners.map((o) => o.id);
+    const runs: [number, number][] = [];
+    for (const id of [...ids].sort((a, b) => a - b)) {
+      const last = runs[runs.length - 1];
+      if (last && id === last[1] + 1) last[1] = id;
+      else if (!last || id > last[1]) runs.push([id, id]);
+    }
+    type Row = { leased: boolean; until: number; possessor: Address; price: bigint; closed: boolean; defaults: boolean; escrow: bigint };
+    const parts = await Promise.all(runs.map(([from, to]) => read<Row[]>("statusBatch", [BigInt(from), BigInt(to)])));
+    const byId = new Map<number, Row>();
+    runs.forEach(([from], r) => parts[r].forEach((row, i) => byId.set(from + i, row)));
+    return owners.map(({ id, owner }) => {
+      const r = byId.get(id)!;
       return {
-        id, owner: byId.get(id)?.owner ?? ("0x" as Address), leased: r.leased, until: Number(r.until),
+        id, owner, leased: r.leased, until: Number(r.until),
         possessor: r.leased ? r.possessor : null, price: r.price, closed: r.closed,
         closedReason: r.closed ? (r.defaults ? "contract" : "holder") : null, escrow: r.escrow,
       };
