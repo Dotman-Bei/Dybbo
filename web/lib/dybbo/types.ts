@@ -24,7 +24,7 @@ export type Status = {
 export type DybboErrorName =
   | "TokenOutOfRange" | "Closed" | "LeaseActive" | "LeaseExpired" | "OwnerChanged" | "SelfDybbo"
   | "WrongPayment" | "DurationOutOfRange" | "PriceOutOfRange" | "NotOwner" | "NotController"
-  | "SameToken" | "Cooldown" | "TargetRepeat" | "BadMark" | "NothingToClaim";
+  | "SameToken" | "Cooldown" | "TargetRepeat" | "BadMark" | "NothingToClaim" | "Reentrancy" | "TransferFailed";
 
 export class DybboError extends Error {
   constructor(public errorName: DybboErrorName, public detail = "") {
@@ -50,6 +50,8 @@ export const ERROR_TEXT: Record<DybboErrorName, string> = {
   TargetRepeat: "This Chog already has your mark today.",
   BadMark: "Pick Boo, Slime or Hex.",
   NothingToClaim: "There is nothing in escrow to claim.",
+  Reentrancy: "A claim was already in progress.",
+  TransferFailed: "Your wallet refused the MON. Claim from a wallet that can receive it.",
 };
 
 export type TxResult = { hash: string | null; block: number | null; simulated: boolean };

@@ -1,29 +1,12 @@
 // The deployed Dybbo contract (PRD §8). Every write: simulate → explicit gas limit → sign →
 // proposed → confirmed from the receipt (F-WL-03..05).
-import { BaseError, ContractFunctionRevertedError, parseAbi, type Address, type WalletClient } from "viem";
+import { BaseError, ContractFunctionRevertedError, type Address, type WalletClient } from "viem";
 import { publicClient } from "../chain";
 import { DYBBO_ADDRESS } from "../config";
+import { dybboAbi } from "./abi";
 import { DybboError, type Activity, type DybboClient, type DybboErrorName, type Lease, type Mark, type Stats, type Status, type Terms, type TxResult } from "./types";
 
-export const dybboAbi = parseAbi([
-  "function possess(uint256 id, uint8 minutes) payable",
-  "function haunt(uint256 sourceId, uint256 targetId, uint8 markId)",
-  "function claim(uint256 id)",
-  "function claimMany(uint256[] ids)",
-  "function setTerms(uint256 id, uint96 pricePerMinute, bool closed)",
-  "function leaseOf(uint256 id) view returns (address possessor, uint40 until, address ownerAtStart, bool active)",
-  "function termsOf(uint256 id) view returns (uint96 price, bool closed, bool defaults, bool holderIsContract)",
-  "function escrowOf(uint256 id) view returns (uint256)",
-  "function marksOf(uint256 id) view returns ((uint16 sourceId, address actor, uint8 markId, uint40 at, bool byPossessor)[])",
-  "function recentActivity() view returns ((uint8 kind, uint16 id, uint16 targetId, address actor, uint8 markId, bool byPossessor, uint40 at, uint96 amount, uint8 minutes)[])",
-  "function stats() view returns (uint256 possessions, uint256 haunts, uint256 paid, uint256 claimed, uint256 possessors, uint256 tokens)",
-  "function lastHauntAt(uint256 sourceId) view returns (uint40)",
-  "function canHaunt(address caller, uint256 sourceId, uint256 targetId) view returns (bool ok, uint8 reason)",
-  "function statusBatch(uint256 from, uint256 to) view returns ((bool leased, uint40 until, address possessor, uint96 price, bool closed, bool defaults, uint256 escrow)[])",
-  "error TokenOutOfRange()", "error Closed()", "error LeaseActive()", "error LeaseExpired()", "error OwnerChanged()",
-  "error SelfDybbo()", "error WrongPayment()", "error DurationOutOfRange()", "error PriceOutOfRange()", "error NotOwner()",
-  "error NotController()", "error SameToken()", "error Cooldown()", "error TargetRepeat()", "error BadMark()", "error NothingToClaim()",
-]);
+export { dybboAbi };
 
 const REASONS: (DybboErrorName | null)[] = [
   null, "TokenOutOfRange", "Closed", "LeaseActive", "LeaseExpired", "OwnerChanged", "SelfDybbo", "WrongPayment",
@@ -65,9 +48,9 @@ export class LiveClient implements DybboClient {
   }
 
   async leaseOf(id: number): Promise<Lease | null> {
-    const [possessor, until, ownerAtStart, active] = await read<[Address, number, Address, boolean]>("leaseOf", [BigInt(id)]);
+    const [possessor, until, ownerAtStart, active, startedAt, fee] = await read<[Address, number, Address, boolean, number, bigint]>("leaseOf", [BigInt(id)]);
     if (/^0x0+$/.test(possessor)) return null;
-    return { possessor, until: Number(until), ownerAtStart, active, startedAt: 0, fee: 0n };
+    return { possessor, until: Number(until), ownerAtStart, active, startedAt: Number(startedAt), fee };
   }
 
   async termsOf(id: number): Promise<Terms> {
@@ -83,9 +66,9 @@ export class LiveClient implements DybboClient {
   }
 
   async recentActivity(): Promise<Activity[]> {
-    const rows = await read<{ kind: number; id: number; targetId: number; actor: Address; markId: number; byPossessor: boolean; at: number; amount: bigint; minutes: number }[]>("recentActivity");
+    const rows = await read<{ kind: number; id: number; targetId: number; actor: Address; markId: number; byPossessor: boolean; at: number; amount: bigint; mins: number }[]>("recentActivity");
     return rows.filter((r) => Number(r.at) > 0).map((r): Activity =>
-      r.kind === 0 ? { kind: "possess", id: r.id, actor: r.actor, at: Number(r.at), minutes: r.minutes, fee: r.amount }
+      r.kind === 0 ? { kind: "possess", id: r.id, actor: r.actor, at: Number(r.at), minutes: r.mins, fee: r.amount }
       : r.kind === 1 ? { kind: "haunt", id: r.id, targetId: r.targetId, actor: r.actor, at: Number(r.at), markId: r.markId, byPossessor: r.byPossessor }
       : { kind: "claim", id: r.id, actor: r.actor, at: Number(r.at), amount: r.amount },
     );
