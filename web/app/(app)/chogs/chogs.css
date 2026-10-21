@@ -1,0 +1,47 @@
+/* Browse. Desktop grid: 6 × 179 + 5 × 16 = 1,154 ≈ the 1,152 canvas (1fr columns absorb the 2px). */
+
+.toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.toolbar__filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.toolbar__sheet { display: none; }
+.find { position: relative; display: inline-flex; }
+.find__hash { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-weight: 600; pointer-events: none; }
+.find .field { padding-left: 26px; width: 160px; }
+.toolbar__filters .select { width: 136px; }
+.count__order { margin-left: auto; display: flex; gap: 8px; }
+.count__order .select { width: 168px; }
+.find .field::placeholder { color: var(--faint); }
+.filter-sheet { display: none; }
+.count { display: flex; align-items: center; gap: 12px; min-height: 36px; margin-bottom: 16px; color: var(--muted); font-weight: 500; }
+.browse__error { margin-bottom: 16px; }
+
+.cgrid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+.ctile { display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 8px 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; text-decoration: none; transition: border-color var(--t-hover) ease, transform var(--t-press) var(--ease-out); }
+.ctile:active { transform: scale(0.98); }
+@media (hover: hover) and (pointer: fine) { .ctile:hover { border-color: var(--text); } }
+.ctile__art { aspect-ratio: 1; border-radius: 12px; overflow: clip; background: var(--raised); }
+.ctile__art img { width: 100%; height: 100%; object-fit: cover; }
+.ctile__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px; }
+.ctile__name { font-size: 16px; font-weight: 600; }
+.ctile__facts { display: flex; flex-direction: column; gap: 2px; padding: 0 4px; font-size: 13px; line-height: 18px; }
+.ctile__facts dd { font-weight: 500; }
+.more { display: flex; justify-content: center; margin-top: 24px; }
+
+@media (max-width: 1100px) { .cgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 960px) {
+  .toolbar__filters { display: none; }
+  .toolbar__sheet { display: inline-flex; }
+  .count__order { display: none; }
+  .toolbar { flex-wrap: nowrap; }
+  .find { flex: 1; }
+  .find .field { width: 100%; }
+  .filter-sheet { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; }
+  .filter-sheet .filter, .filter-sheet .select { flex: 1 1 140px; }
+  .filter-sheet .segmented { width: 100%; }
+  .filter-sheet .segmented button { flex: 1; }
+}
+@media (max-width: 700px) {
+  .cgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .ctile { padding: 6px 6px 10px; border-radius: 16px; gap: 8px; }
+  .ctile__art { border-radius: 10px; }
+  .ctile__top { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
