@@ -22,6 +22,7 @@ contract Dybbo {
     uint256 public constant MARK_TTL = 24 hours;
     uint256 public constant MARKS_PER_TOKEN = 8;
     uint256 public constant MARK_COUNT = 3;
+    uint256 public constant RECENT = 64;
 
     IChog public immutable CHOG;
     uint256 public immutable DEFAULT_PRICE;
@@ -92,6 +93,41 @@ contract Dybbo {
     mapping(uint256 => uint40) public lastHauntAt;
     mapping(uint256 => mapping(uint256 => uint40)) internal _lastPairAt;
 
+    /// The home feed without an indexer (public RPCs cap eth_getLogs at 100 blocks). Two slots each.
+    struct Activity {
+        uint8 kind; // 0 possess, 1 haunt, 2 claim
+        uint16 id;
+        uint16 targetId;
+        address actor;
+        uint8 markId;
+        bool byPossessor;
+        uint40 at;
+        uint96 amount;
+        uint8 mins;
+    }
+
+    struct Status {
+        bool leased;
+        uint40 until;
+        address possessor;
+        uint96 price;
+        bool closed;
+        bool defaults;
+        uint256 escrow;
+    }
+
+    Activity[64] internal _recent;
+    uint8 internal _recentHead;
+
+    uint256 public totalPossessions;
+    uint256 public totalHaunts;
+    uint256 public totalPaid;
+    uint256 public totalClaimed;
+    uint256 public distinctPossessors;
+    uint256 public distinctTokens;
+    mapping(address => bool) internal _seenPossessor;
+    mapping(uint256 => bool) internal _seenToken;
+
     uint256 private _locked = 1;
 
     modifier nonReentrant() {
@@ -140,6 +176,18 @@ contract Dybbo {
         _lease[id] = Lease(msg.sender, until, uint40(block.timestamp), holder, uint96(msg.value));
         _escrow[id] += msg.value;
 
+        ++totalPossessions;
+        totalPaid += msg.value;
+        if (!_seenPossessor[msg.sender]) {
+            _seenPossessor[msg.sender] = true;
+            ++distinctPossessors;
+        }
+        if (!_seenToken[id]) {
+            _seenToken[id] = true;
+            ++distinctTokens;
+        }
+        _record(Activity(0, uint16(id), 0, msg.sender, 0, false, uint40(block.timestamp), uint96(msg.value), mins));
+
         emit Possessed(id, msg.sender, holder, until, msg.value);
     }
 
@@ -157,6 +205,9 @@ contract Dybbo {
         _markHead[targetId] = uint8((head + 1) % MARKS_PER_TOKEN);
         lastHauntAt[sourceId] = at;
         _lastPairAt[sourceId][targetId] = at;
+
+        ++totalHaunts;
+        _record(Activity(1, uint16(sourceId), uint16(targetId), msg.sender, markId, byPossessor, at, 0, 0));
 
         emit Haunted(sourceId, targetId, msg.sender, markId, byPossessor);
     }
@@ -191,6 +242,8 @@ contract Dybbo {
         amount = _escrow[id];
         if (amount == 0) return 0;
         _escrow[id] = 0;
+        totalClaimed += amount;
+        _record(Activity(2, uint16(id), 0, msg.sender, 0, false, uint40(block.timestamp), uint96(amount), 0));
         emit Claimed(id, msg.sender, amount);
     }
 
@@ -250,7 +303,48 @@ contract Dybbo {
         }
     }
 
+    /// @notice The last 64 actions, newest first.
+    function recentActivity() external view returns (Activity[] memory out) {
+        uint256 n;
+        for (uint256 i; i < RECENT; ++i) if (_recent[i].at != 0) ++n;
+        out = new Activity[](n);
+        uint256 head = _recentHead;
+        for (uint256 k; k < n; ++k) out[k] = _recent[(head + RECENT - 1 - k) % RECENT];
+    }
+
+    function stats()
+        external
+        view
+        returns (uint256 possessions, uint256 haunts, uint256 paid, uint256 claimed, uint256 possessors, uint256 tokens)
+    {
+        return (totalPossessions, totalHaunts, totalPaid, totalClaimed, distinctPossessors, distinctTokens);
+    }
+
+    /// @notice Live status for tokens `from` to `to` inclusive, for the browse page. Chog Genesis is not
+    /// enumerable, so this reads ownerOf for each token in one call.
+    function statusBatch(uint256 from, uint256 to) external view returns (Status[] memory out) {
+        _inRange(from);
+        _inRange(to);
+        if (to < from) revert TokenOutOfRange();
+        out = new Status[](to - from + 1);
+        for (uint256 id = from; id <= to; ++id) {
+            address holder = CHOG.ownerOf(id);
+            Lease storage l = _lease[id];
+            bool leased = _active(l, holder);
+            (uint256 price, bool closed, bool defaults) = _effectiveTerms(id, holder);
+            out[id - from] = Status(
+                leased, leased ? l.until : 0, leased ? l.possessor : address(0), uint96(price), closed, defaults, _escrow[id]
+            );
+        }
+    }
+
     // ---------------------------------------------------------------- internals
+
+    function _record(Activity memory a) internal {
+        uint8 head = _recentHead;
+        _recent[head] = a;
+        _recentHead = uint8((head + 1) % RECENT);
+    }
 
     function _inRange(uint256 id) internal pure {
         if (id == 0 || id > SUPPLY) revert TokenOutOfRange();
