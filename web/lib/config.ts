@@ -4,7 +4,10 @@
 export const CHAIN_ID = 143;
 export const CHOG_ADDRESS = "0xc96d31F8626c6D03Fae5dCD3d61e3FB9F4a73763" as const;
 export const MULTICALL3 = "0xcA11bde05977b3631167028862bE2a173976CA11" as const;
-export const RPC_URLS = ["https://rpc.monad.xyz", "https://rpc1.monad.xyz"] as const;
+/** NEXT_PUBLIC_RPC_URL points the app at a local fork (PRD §12.1); otherwise the public Monad RPCs. */
+export const RPC_URLS: readonly string[] = process.env.NEXT_PUBLIC_RPC_URL
+  ? [process.env.NEXT_PUBLIC_RPC_URL]
+  : ["https://rpc.monad.xyz", "https://rpc1.monad.xyz"];
 export const EXPLORER = "https://monadscan.com";
 
 /** Set once the contract is deployed; until then the app runs in preview mode. */
