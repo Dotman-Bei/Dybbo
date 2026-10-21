@@ -39,7 +39,7 @@ The home page (`/`) is a **page**: it is read and scrolled, and it follows the p
 
 ### 2.1 Thesis
 
-**Possession is a short, loud, rule-bound thing.** The home page says it like a street poster for Chogtober: flat orange, black type at full volume, a real Chog cut and tilted over the headline. The app screens are the quiet ticket office behind the poster: white cards, one large radius, pale status tints, and a single orange bar that is always the lease running out.
+**Possession is a short, loud, rule-bound thing.** The home page says it like a street poster for Chogtober: flat slime green, deep-green type at full volume, a real Chog cut and tilted over the headline. The app screens are the quiet ticket office behind the poster: white cards, one large radius, pale status tints, and a single green bar that is always the lease running out.
 
 **The idea (competitor-tested):** *On this page, the lease (one Chog, a number of minutes, a fee that goes to its holder, a timer that ends in one block) becomes the poster's one control and the app's one bar.* Another Chog app cannot sign this: no other entry has a per-minute lease enforced at every action.
 
@@ -47,22 +47,22 @@ The home page (`/`) is a **page**: it is read and scrolled, and it follows the p
 
 ### 2.2 Palette
 
-**Two colours: Chogtober orange and near-black.** White surfaces carry the app screens. The Chog art is the only multicolour thing on any page; Dybbo's own chrome never competes with it. (Revised after review: the first build's sky, lime and crimson fields read as a colour riot next to the art.)
+**Ectoplasm: two colours, slime green and deep haunted green.** White surfaces carry the app screens. The Chog art is the only multicolour thing on any page. Green sits opposite the Chogs' purple and pink, so the art stands out, and it says haunting without saying Halloween. (Revised after review twice: the first build's sky, lime and crimson fields read as a colour riot, and orange with black fought the art. Chosen from four pairs: Ectoplasm, blood and bone, acid and ink, cobalt and paper.)
 
-**Home page fields** (flat, full strength, hard cuts; sections alternate orange and near-black):
+**Home page fields** (flat, full strength, hard cuts; sections alternate slime and deep green):
 
 | Role | Value | Use |
 |---|---|---|
-| orange | `#ff8126` | Hero, try to take it, leave a mark, before you pay, footer menu half |
-| orange step | `#ff9a52` | Tiles and FAQ rows on orange |
-| near-black | `#161615`, ink `#f2f2f2` | How a possession runs, the board, the slider, the CTA band |
-| near-black step | `#242422` | Board rows |
-| ink | `#111111` | Text on orange; buttons (ink fill, orange label) |
-| orange deep | `#7a3300` | Hover ink on orange only |
+| slime | `#3ddc97` | Hero, try to take it, leave a mark, before you pay, footer menu half |
+| slime step | `#6ae6b0` | Tiles and FAQ rows on slime |
+| deep green | `#0c1f17`, ink `#e8f5ee` | How a possession runs, the board, the slider, the CTA band |
+| deep green step | `#163325` | Board rows |
+| ink | `#0c1f17` | Text on slime; buttons (deep green fill, slime label) |
+| slime deep | `#0b5b3a` | Hover ink on slime only |
 
-Orange on near-black carries the accents: the stage bar's segments, the fee figure, the slider thumb, the CTA word, the open board row.
+Slime on deep green carries the accents: the stage bar's segments, the fee figure, the slider thumb, the CTA word, the open board row.
 
-**App screens** (pastel consumer, colour budget held to the lease):
+**App screens** (pastel consumer, colour held to the lease):
 
 | Role | Value |
 |---|---|
@@ -71,22 +71,23 @@ Orange on near-black carries the accents: the stage bar's segments, the fee figu
 | `--raised` (wells) | `#f3f3f1` |
 | `--active` (selected nav, selected row) | `#ececea` |
 | `--border` / `--rule` / `--control` | `#e8e8e6` / `#f1f1ef` / `#d1d5db` |
-| `--text` / `--muted` / `--faint` | `#111111` / `#5f6368` / `#6b6b6b` |
-| primary button | `#111111`, label `#ffffff` (one per screen) |
+| `--text` / `--muted` / `--faint` | `#0c1f17` / `#5f6368` / `#6b6b6b` |
+| primary button | `#0c1f17`, label `#ffffff` (one per screen) |
 | secondary button | white, 1px `#d1d5db` |
-| `--data` (the lease bar) | `#e8650d` |
-| `--positive` / `--negative` | pills `#dcfae5`/`#04250e` ("Confirmed") and `#ffedea`/`#831c1e` (reverts) only |
+| `--data` (the lease bar) | `#17a36a` (slime darkened to 3:1 on white) |
+| positive | the accent's own pale pair `#d8f7e8` / `#0b3d27` ("Confirmed") |
+| `--negative` | `#ffedea` / `#831c1e` (reverts) only |
 | notice | `#f3f3f1`, border `#e8e8e6`, text `#3d3d3d` |
 
 Status, one hue at three intensities:
 
 | Status | Fill | Ink |
 |---|---|---|
-| Open | `#ffe9d6` | `#7a3300` |
-| Possessed | `#111111` | `#ff8126` |
+| Open | `#d8f7e8` | `#0b3d27` |
+| Possessed | `#0c1f17` | `#3ddc97` |
 | Closed | `#ececea` | `#3d3d3d` |
 
-The three marks are flat glyphs with a 2px `#111111` outline, told apart by shape: **Boo** a white sheet, **Slime** a black drip, **Hex** an orange disc with a black spiral. Their chips are neutral `#f1f1ef` with ink text.
+The three marks are flat glyphs with a 2px `#0c1f17` outline, told apart by shape: **Boo** a white sheet, **Slime** a deep-green drip, **Hex** a slime disc with a spiral. Their chips are neutral `#eef3f0` with ink text.
 
 No other hue in Dybbo's own chrome (Chog art brings its own), no gradient, no glow, no cream ground.
 
@@ -139,16 +140,16 @@ Copy below is final unless marked *sample*. Numbers in copy come from PRD consta
 
 **Navigation** (no bar, 24px margins): wordmark `Dybbo` top-left; `Chogs`, `Proof`, `Judges`, `About` top-right at 15px. Phone: wordmark and `Menu`.
 
-**1. Hero** — orange field, one screen.
+**1. Hero** — slime field, one screen.
 - `h1`, two authored lines, first flush left, second flush right: **Possess** / **any Chog**
 - A real Chog image (#1462, square art), hard-cropped to a blunt polygon, tilted 4°, overlapping the second line from the bottom right, about 34% of the width.
 - Supporting sentence (bottom-left, lead size): **Control a Chog Genesis you don't own for up to ten minutes. No approval, no custody. The fee waits for its holder.**
-- Action (bottom-right, square, ink with an orange label): **Possess a random Chog**
+- Action (bottom-right, square, deep green with a slime label): **Possess a random Chog**
 - Caption under the image, small: **CHOG #1462 · open at 0.01 MON a minute** (status from data; "closed" or "possessed until 14:05" when true).
 
-**2. How a possession runs** — near-black field. The "stages as one bar" blueprint.
+**2. How a possession runs** — deep green field. The "stages as one bar" blueprint.
 - `h2`: **How a possession runs**
-- One bar of four flat orange segments with 6px gaps, widths from true durations with a 12 % floor:
+- One bar of four flat slime segments with 6px gaps, widths from true durations with a 12 % floor:
 
 | Width | Duration (in the segment) | Clause (under it) |
 |---|---|---|
@@ -157,8 +158,8 @@ Copy below is final unless marked *sample*. Numbers in copy come from PRD consta
 | 12 % | One block | Then the lease ends. Your next haunt reverts. |
 | 24 % | Whenever they like | Last, the holder claims the fee. They never signed up. |
 
-**3. Try to take it** — orange field. "Large marks on tiles" blueprint, four across, two rows.
-- Heading tile (near-black, double width): `h2` **Try to take it** and the claim: **A possessor can never move, approve or list the Chog they control.**
+**3. Try to take it** — slime field. "Large marks on tiles" blueprint, four across, two rows.
+- Heading tile (deep green, double width): `h2` **Try to take it** and the claim: **A possessor can never move, approve or list the Chog they control.**
 - Six tiles, each a short name at 28–32px and one line at body size:
   - **Move it** — Reverts. Nobody approved Dybbo or you.
   - **List it** — Nothing to list with. There is no approval.
@@ -168,24 +169,24 @@ Copy below is final unless marked *sample*. Numbers in copy come from PRD consta
   - **Ask the builder** — No admin, no pause, no upgrade, no fee.
 - Under the board, a plain link: **Run the three checks yourself** → `/proof`
 
-**4. Open right now** — near-black band. "Rows as a board" blueprint (departure board), `data-ui`.
+**4. Open right now** — deep green band. "Rows as a board" blueprint (departure board), `data-ui`.
 - `h2`: **Open right now**
-- Nine rows of real Chogs from the metadata snapshot with live status: name (`CHOG #1462`), Tier, Background, price (`0.01 MON/min`), status block (`Open` orange / `Possessed` light / `Closed` grey). Rows read from `recentActivity()` once the contract has activity; until then, from open Chogs.
-- The fourth row is open (orange, 216px): the Chog's image at 168px, its traits in two lines, and **Possess #1462** linking to its page. Clicking another row opens it instead.
+- Nine rows of real Chogs from the metadata snapshot with live status: name (`CHOG #1462`), Tier, Background, price (`0.01 MON/min`), status block (`Open` slime / `Possessed` light / `Closed` grey). Rows read from `recentActivity()` once the contract has activity; until then, from open Chogs.
+- The fourth row is open (slime, 216px): the Chog's image at 168px, its traits in two lines, and **Possess #1462** linking to its page. Clicking another row opens it instead.
 - The first and last rows are cut in half by the section edges.
 
-**5. Leave a mark** — orange field.
+**5. Leave a mark** — slime field.
 - Left (7 columns): a public Chog card fragment (`data-ui`), the art as-is, and beside it its live marks list: *sample* — **Boo by #1462, possessed · 2 min ago**, **Slime by #311 · 40 min ago**, **Hex by #1462, possessed · 3 h ago**.
 - Right (5 columns): `h2` **Leave a mark**; body: **While you possess a Chog you can haunt any open Chog with one of three marks. A mark sits beside its target's art for 24 hours, signed with the Chog that left it. Holders strike back with their own Chog, no lease needed.**
 - The three marks as glyphs at 96px with their names: **Boo**, **Slime**, **Hex**, and the limits in one line: **One mark every 15 seconds. One per target per day. Eight live marks per Chog.**
 
-**6. How long do you want it?** — near-black field, the figure in orange. "Figure set by a slider" blueprint. The live thing.
+**6. How long do you want it?** — deep green field, the figure in slime. "Figure set by a slider" blueprint. The live thing.
 - `h2` (top-left, 36–44px): **How long do you want it?**
 - Control (`data-ui`, 400px): label **Minutes on #1462**, a slider 1–10, preset 5, value shown (`5 min`).
 - Figure, bottom-left, `clamp(140px, 19vw, 320px)`, tabular: **0.05** with unit **MON**.
 - Working-out, bottom-right on the figure's baseline: **0.01 MON a minute × 5 minutes, paid in full into #1462's escrow. Dybbo keeps nothing.**
 
-**7. Before you pay** — orange field, the open tile near-black. "Accordion of filled tiles": sticky heading left, `<details name="faq">` tiles right.
+**7. Before you pay** — slime field, the open tile deep green. "Accordion of filled tiles": sticky heading left, `<details name="faq">` tiles right.
 - `h2`: **Before you pay**
 - Tiles:
   1. **Can a possessor steal the Chog?** — No. Dybbo never asks for an approval and has no code that calls approve or transfer on Chog Genesis. A possession is a record inside Dybbo; the NFT never moves.
@@ -197,12 +198,12 @@ Copy below is final unless marked *sample*. Numbers in copy come from PRD consta
   7. **What happens to unclaimed fees after a sale?** — They stay with the token, so the buyer can claim them. Prices and opt-outs do not carry over: the buyer starts on the defaults.
   8. **Is this made by the Chog team?** — No. Dybbo is an unofficial community project built for Chogathon 2026. Chog art is shown with permission and never altered.
 
-**8. Possess** — near-black band, orange word, the whole band is one link. "One word is the button".
+**8. Possess** — deep green band, slime word, the whole band is one link. "One word is the button".
 - Word: **Possess** (24–30vw).
 - Sentence top-left: **Start a 5-minute lease on a random open Chog.** (minutes follow the slider)
 - Arrow, top-right, 48px.
 
-**9. Footer** — split, one screen. Left half: a second real Chog image cropped very close. Right half, orange field:
+**9. Footer** — split, one screen. Left half: a second real Chog image cropped very close. Right half, slime field:
 - Wordmark `Dybbo`; menu at ~2.6vw: **Chogs**, **My Chogs**, **My possessions**, **The claim**, **Judge guide**, **About**
 - Two blocks at 15px: **Built for Chogathon 2026 by one builder. Source on GitHub.** / **Chog Discord · chog.xyz**
 - Legal line: **Unofficial community project. Chog art © ChogLabs, shown with permission and never altered. Dybbo never asks for an NFT approval.**
@@ -210,7 +211,7 @@ Copy below is final unless marked *sample*. Numbers in copy come from PRD consta
 ### 3.2 App shell (built with `/chogs`)
 
 Archetype **no sidebar** (top bar over a centred column; the dealt icon rail is replaced, see §6).
-- Top bar 56px on the ground: Dybbo mark (a flat orange disc with a black possession notch) + `Dybbo`; links `Chogs`, `My Chogs`, `Possessions`, `Proof`, `Judges`; right: network (`Monad`) and the wallet button (`Connect wallet` / `0x3d38…e7e0 · 12.40 MON`).
+- Top bar 56px on the ground: Dybbo mark (a flat slime-green disc with a deep-green bite) + `Dybbo`; links `Chogs`, `My Chogs`, `Possessions`, `Proof`, `Judges`; right: network (`Monad`) and the wallet button (`Connect wallet` / `0x3d38…e7e0 · 12.40 MON`).
 - Active link: a neutral grey pill `#ececea`, label unchanged.
 - Preview notice (only while no Dybbo address is configured), under the bar, notice colours: **Preview: the Dybbo contract is not on mainnet yet. Leases and marks here are simulated in this browser. Chogs, owners and art are real.**
 - Phone: 48px bar with mark, the screen's name and `Menu`; the menu opens a full-screen sheet with the links, the wallet and the network.
@@ -233,7 +234,7 @@ Archetype **no sidebar** (top bar over a centred column; the dealt icon rail is 
 - `h1` **CHOG #1462**; subline: **Token 1 · Uncommon · held by 0x3d38…e7e0**
 - Left column (desktop 560px): the art, square, radius 20; under it **Traits** as a two-column key–value well (all attributes in metadata order).
 - Right column:
-  - **Lease card** (the answer): status pill; when open **Open at 0.01 MON a minute** (+ **default price** or **set by the holder**); when possessed, the orange lease bar and **Possessed by 0x9a1f…44c2 until 14:05:12**; when closed **Closed by its holder** or **Closed: held by a contract**.
+  - **Lease card** (the answer): status pill; when open **Open at 0.01 MON a minute** (+ **default price** or **set by the holder**); when possessed, the green lease bar and **Possessed by 0x9a1f…44c2 until 14:05:12**; when closed **Closed by its holder** or **Closed: held by a contract**.
   - Possess controls inside the lease card: **Minutes** stepper (−/+, 1–10), **Fee 0.05 MON**, **Gas about 0.002 MON** (from simulation; dash in preview), **Your balance 12.40 MON**, primary **Possess for 5 min**. Disabled reasons in words: **You hold this Chog. Haunt with it below instead.** / **Possessed until 14:05:12.** / **Closed by its holder.**
   - **Escrow card**: figure **0.05 MON** waiting for the holder; line **Unclaimed fees follow the token. If #1462 is sold, the buyer can claim them.** Holder: **Claim 0.05 MON**. Non-holder: text action **Try to claim it** → simulated revert shown inline: **Reverted: NotOwner. Only the wallet holding #1462 can claim.**
   - **Marks on #1462** (24 h, ≤ 8): rows of mark chip + **by #311, possessed** + relative time; empty: **No marks in the last 24 hours.**
@@ -245,7 +246,7 @@ Archetype **no sidebar** (top bar over a centred column; the dealt icon rail is 
 
 - Question: **How long do I have, and what can I hit next?**
 - `h1` **Possessing #1462**; subline: **Lease paid 0.05 MON to #1462's escrow · started 14:00:12**
-- **Lease card** (largest block): countdown **4:37** (36px), the orange bar the width of the time left over the lease's length, **Ends 14:05:12**; validity line **Valid · holder unchanged since you started (0x3d38…e7e0)**; cooldown **Next haunt in 9 s** / **Ready to haunt**.
+- **Lease card** (largest block): countdown **4:37** (36px), the green bar the width of the time left over the lease's length, **Ends 14:05:12**; validity line **Valid · holder unchanged since you started (0x3d38…e7e0)**; cooldown **Next haunt in 9 s** / **Ready to haunt**.
 - **Haunt panel**: target picker with three tabs **Random open Chog / By number / Haunted you back**; the chosen target shown with its art at 64px and status; mark choice as three chips **Boo / Slime / Hex**; primary **Haunt #311 with Boo**. Rule errors in words before signing: **#311 already has your mark today.** / **Wait 9 s.** / **#311 is closed.**
 - **Last result**: **Boo landed on #311 · confirmed in block 115,160,402** or the decoded revert.
 - **Try to take it** card: button **Try to take it** → simulates `transferFrom(holder, you, 1462)` on Chog Genesis and shows **Reverted: not owner nor approved. You control #1462 inside Dybbo only.**; two reads: **Approved for all: false** (`isApprovedForAll(0x3d38…, Dybbo)`) and **Approved address: 0x0000…0000**, each with **Read on MonadScan**; text action **Send it for real** with **A reverted transaction still pays gas on Monad (charged on the gas limit).**
@@ -328,7 +329,7 @@ Archetype **no sidebar** (top bar over a centred column; the dealt icon rail is 
 | ChogArt | Square, radius 10 (tile) / 20 (detail), Background trait colour as the placeholder ground | Same |
 | StatusPill | 22px pale tile + ink (Open / Possessed / Closed) | Same |
 | MarkGlyph / MarkChip | Glyph 16–96px; chip = glyph + name on its pale tile | Same |
-| LeaseBar | Full card width, 12px, orange, shrinks linearly every 100ms | Becomes the pinned strip on `/possess` |
+| LeaseBar | Full card width, 12px, green, shrinks linearly every 100ms | Becomes the pinned strip on `/possess` |
 | Countdown | `m:ss`, 36px, tabular | 28px in the pinned strip |
 | MinutesStepper | −/+ buttons 36px, value centred, 1–10 | 44px buttons |
 | CostLines | Key–value rows: fee, gas, balance, total | Same |
