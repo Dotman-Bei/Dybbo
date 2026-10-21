@@ -235,7 +235,7 @@ Archetype **no sidebar** (top bar over a centred column; the dealt icon rail is 
 - Left column (desktop 560px): the art, square, radius 20; under it **Traits** as a two-column key–value well (all attributes in metadata order).
 - Right column:
   - **Lease card** (the answer): status pill; when open **Open at 0.01 MON a minute** (+ **default price** or **set by the holder**); when possessed, the green lease bar and **Possessed by 0x9a1f…44c2 until 14:05:12**; when closed **Closed by its holder** or **Closed: held by a contract**.
-  - Possess controls inside the lease card: **Minutes** stepper (−/+, 1–10), **Fee 0.05 MON**, **Gas about 0.002 MON** (from simulation; dash in preview), **Your balance 12.40 MON**, primary **Possess for 5 min**. Disabled reasons in words: **You hold this Chog. Haunt with it below instead.** / **Possessed until 14:05:12.** / **Closed by its holder.**
+  - Possess controls inside the lease card: **Minutes** stepper (−/+, 1–10), **Fee 0.05 MON**, **Gas, at most ≈ 0.042 MON** (measured on Monad × the live gas price × 1.2), **Total ≈ 0.092 MON**, **Your balance 12.40 MON**, primary **Possess for 5 min**. Disabled reasons in words: **You hold this Chog. Haunt with it below instead.** / **Possessed until 14:05:12.** / **Closed by its holder.**
   - **Escrow card**: figure **0.05 MON** waiting for the holder; line **Unclaimed fees follow the token. If #1462 is sold, the buyer can claim them.** Holder: **Claim 0.05 MON**. Non-holder: text action **Try to claim it** → simulated revert shown inline: **Reverted: NotOwner. Only the wallet holding #1462 can claim.**
   - **Marks on #1462** (24 h, ≤ 8): rows of mark chip + **by #311, possessed** + relative time; empty: **No marks in the last 24 hours.**
   - **Marks #1462 left**: from activity; empty: **#1462 hasn't haunted anyone today.**
@@ -293,10 +293,10 @@ Archetype **no sidebar** (top bar over a centred column; the dealt icon rail is 
 ### 3.9 `/judges` Judge guide
 
 - Question: **How do I test this in five minutes without a Chog?**
-- `h1` **Judge guide**; subline: **No Chog needed. A Monad wallet with 0.05 MON covers every test.**
+- `h1` **Judge guide**; subline: **No Chog needed. A Monad wallet with 0.1 MON covers every test (one lease and one haunt cost ≈ 0.085 MON with gas).**
 - Primary in the title row: **Possess #1462 for 1 minute** (a suggested open Chog, live).
 - **Steps** (`<ol>`, order is real):
-  1. **Get a little MON on Monad mainnet** (chainId 143). 0.05 MON covers the tests below.
+  1. **Get a little MON on Monad mainnet** (chainId 143). 0.1 MON covers the tests below.
   2. **Possess the suggested Chog for 1 minute.** Expect: fee 0.01 MON plus gas; the timer starts.
   3. **Haunt any open Chog once.** Expect: the mark shows on its page, labelled "by #1462, possessed".
   4. **Press Try to take it.** Expect: the transfer reverts; approvals read false.
