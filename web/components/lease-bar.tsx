@@ -1,5 +1,5 @@
 "use client";
-// The lease running out: one orange bar, the width of the time left over the lease's length.
+// The lease running out: one green bar, the width of the time left over the lease's length.
 
 export function LeaseBar({ start, until, now, label }: { start: number; until: number; now: number; label?: string }) {
   const total = Math.max(1, until - start);

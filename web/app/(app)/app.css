@@ -24,7 +24,7 @@
 @media (hover: hover) and (pointer: fine) { .bar__link:not([aria-current]):hover { background: var(--raised); } }
 .bar__end { margin-left: auto; display: flex; align-items: center; gap: 16px; }
 .bar__net { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 500; }
-.bar__net i { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+.bar__net i { width: 8px; height: 8px; border-radius: 50%; background: var(--slime); }
 .bar__menu { display: none; margin-left: auto; min-height: 44px; padding: 0 4px; font-weight: 600; font-size: 16px; }
 .sheet { position: fixed; inset: 48px 0 0 0; background: var(--ground); padding: 16px; display: flex; flex-direction: column; gap: 24px; z-index: 30; animation: sheet-in var(--t-ui) var(--ease-out); }
 .sheet nav { display: flex; flex-direction: column; }
@@ -92,14 +92,14 @@ a.link { color: var(--text); text-decoration: underline; text-decoration-color: 
 .btn:active:not(:disabled) { transform: scale(0.97); }
 .btn:disabled { cursor: not-allowed; }
 .btn--primary { background: var(--text); color: #fff; }
-.btn--primary:disabled { background: #d6d6d4; color: #4a4a48; }
+.btn--primary:disabled { background: #d5dcd8; color: #3f4a44; }
 .btn--secondary { background: var(--surface); color: var(--text); border: 1px solid var(--control); }
 .btn--secondary:disabled { color: var(--faint); }
 .btn--text { padding: 0 4px; min-height: 32px; text-decoration: underline; text-decoration-color: var(--control); text-underline-offset: 3px; }
 .btn--block { width: 100%; }
 .btn--lg { min-height: 44px; padding: 0 20px; font-size: 16px; }
 @media (hover: hover) and (pointer: fine) {
-  .btn--primary:hover:not(:disabled) { background: #333331; }
+  .btn--primary:hover:not(:disabled) { background: #163325; }
   .btn--secondary:hover:not(:disabled) { border-color: var(--text); }
   .btn--text:hover { text-decoration-color: currentColor; }
 }

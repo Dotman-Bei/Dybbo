@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Possess any Chog Genesis for up to ten minutes on Monad. No approval, no custody. The fee waits in escrow for its holder.",
 };
 
-export const viewport: Viewport = { themeColor: "#ff8126" };
+export const viewport: Viewport = { themeColor: "#3ddc97" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

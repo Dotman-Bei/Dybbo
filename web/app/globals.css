@@ -6,15 +6,14 @@
 @font-face { font-family: "Chillax"; src: url("/fonts/chillax-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 
 :root {
-  /* home fields */
-  --orange: #ff8126;
-  --orange-step: #ff9a52;
-  --orange-deep: #7a3300;
-  --night: #161615;
-  --night-step: #242422;
-  --night-ink: #f2f2f2;
-  --ink: #111111;
-  --brown: #5c2a05;
+  /* Ectoplasm: slime green and deep haunted green. Two colours; the Chog art brings the rest. */
+  --slime: #3ddc97;
+  --slime-step: #6ae6b0;
+  --slime-deep: #0b5b3a;
+  --night: #0c1f17;
+  --night-step: #163325;
+  --night-ink: #e8f5ee;
+  --ink: #0c1f17;
 
   /* app */
   --ground: #f6f6f4;
@@ -24,19 +23,19 @@
   --border: #e8e8e6;
   --rule: #f1f1ef;
   --control: #d1d5db;
-  --text: #111111;
+  --text: #0c1f17;
   --muted: #5f6368;
   --faint: #6b6b6b;
-  --data: #e8650d;
-  --positive: #247b50;
+  --data: #17a36a;
+  --positive: #0b7a4b;
   --negative: #c4242a;
-  --pill-positive-bg: #dcfae5; --pill-positive-ink: #04250e;
+  --pill-positive-bg: #d8f7e8; --pill-positive-ink: #0b3d27;
   --pill-negative-bg: #ffedea; --pill-negative-ink: #831c1e;
   --notice-bg: #f3f3f1; --notice-border: #e8e8e6; --notice-ink: #3d3d3d;
-  --open-bg: #ffe9d6; --open-ink: #7a3300;
-  --held-bg: #111111; --held-ink: #ff8126;
+  --open-bg: #d8f7e8; --open-ink: #0b3d27;
+  --held-bg: #0c1f17; --held-ink: #3ddc97;
   --closed-bg: #ececea; --closed-ink: #3d3d3d;
-  --chip-bg: #f1f1ef; --chip-ink: #111111;
+  --chip-bg: #eef3f0; --chip-ink: #0c1f17;
 
   --font: "Chillax", ui-rounded, system-ui, sans-serif;
 
