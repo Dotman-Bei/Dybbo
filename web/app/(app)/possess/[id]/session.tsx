@@ -31,10 +31,11 @@ export function Session({ chog }: { chog: Chog }) {
   const l = lease.data;
   const mine = !!l && !!actor && lc(l.possessor) === lc(actor);
 
-  // F: redirect to the token page if this wallet never possessed this Chog.
+  // Redirect to the token page if this wallet holds no lease here, judged on a read made after this
+  // page mounted: a cached read from before the possession would bounce the new possessor away.
   useEffect(() => {
-    if (!lease.isLoading && actor && !mine) router.replace(`/chog/${id}`);
-  }, [lease.isLoading, actor, mine, id, router]);
+    if (lease.isFetchedAfterMount && !lease.isFetching && actor && !mine) router.replace(`/chog/${id}`);
+  }, [lease.isFetchedAfterMount, lease.isFetching, actor, mine, id, router]);
 
   if (!l || !mine || !actor) {
     return (

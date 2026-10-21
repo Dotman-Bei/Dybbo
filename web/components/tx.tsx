@@ -24,6 +24,8 @@ export function useTx() {
       const p = send();
       setState({ step: "pending" });
       const result = await p;
+      // Confirmed on chain: every Dybbo read is now stale, in preview and live mode alike.
+      window.dispatchEvent(new Event("dybbo:change"));
       setState({ step: "done", result });
       onDone?.(result);
       return result;
