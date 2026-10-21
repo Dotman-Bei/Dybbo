@@ -1,0 +1,38 @@
+.me__notice { margin-bottom: 16px; }
+.me__empty-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.escrowcard { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 72px; }
+@media (max-width: 960px) { .escrowcard { position: static; order: -1; } }
+.escrowcard .card__head { margin-bottom: 0; }
+
+.table { width: 100%; border-collapse: collapse; }
+.table th { text-align: left; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--muted); padding: 0 8px 8px; border-bottom: 1px solid var(--border); }
+.table th.num, .table td.num { text-align: right; }
+.table td { padding: 10px 8px; border-bottom: 1px solid var(--rule); vertical-align: middle; font-variant-numeric: tabular-nums; }
+.table tr:last-child td { border-bottom: 0; }
+.table th:first-child, .table td:first-child { padding-left: 0; }
+.table th:last-child, .table td:last-child { padding-right: 0; }
+.t-chog { display: flex; align-items: center; gap: 12px; }
+.t-art { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; flex: none; display: inline-block; }
+.t-name { display: block; font-size: 16px; font-weight: 600; }
+.t-sub { display: none; }
+.t-act { text-align: right; }
+
+.lookup { margin-top: 16px; max-width: 760px; display: flex; flex-direction: column; gap: 8px; }
+.lookup__form { display: flex; gap: 8px; margin-top: 4px; }
+.lookup__form .field { flex: 1; min-width: 0; }
+
+@media (max-width: 700px) {
+  .table thead { display: none; }
+  .table tr { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .table tr:last-child { border-bottom: 0; }
+  .table td { border: 0; padding: 0; }
+  .table td:nth-child(3), .table td:nth-child(4), .table td:nth-child(5) { display: none; }
+  .table td:nth-child(2) { justify-self: end; }
+  .t-sub { display: block; }
+  .table td.t-act { grid-column: 1 / -1; text-align: left; padding-left: 60px; }
+  .lookup__form { flex-direction: column; }
+}
+
+.run { align-items: center; }
+.run__line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.run .row__main { min-width: 0; }
