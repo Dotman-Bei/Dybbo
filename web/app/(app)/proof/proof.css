@@ -1,0 +1,21 @@
+.claim { font-size: 24px; line-height: 32px; font-weight: 500; letter-spacing: -0.01em; max-width: 60ch; margin-bottom: 24px; }
+.proof__pick { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.proof__pickrow { display: flex; gap: 8px; }
+.proof__pickrow .field { width: 140px; }
+.checks { display: flex; flex-direction: column; gap: 8px; }
+.check { background: var(--raised); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.check__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.check__title { font-size: 16px; font-weight: 600; }
+.check__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 16px; margin-top: 4px; }
+.check__grid dd { font-weight: 500; overflow-wrap: anywhere; }
+.test__name { font-size: 13px; }
+.proof__links { display: flex; gap: 16px; margin-top: 12px; }
+.proof__none { margin-top: 8px; font-weight: 600; }
+@media (max-width: 700px) {
+  .claim { font-size: 20px; line-height: 28px; }
+  .proof__pickrow { flex-direction: column; }
+  .proof__pickrow .field { width: 100%; }
+  .check__grid { grid-template-columns: 1fr; gap: 8px; }
+}
+.proof > .stack:last-child { position: sticky; top: 72px; }
+@media (max-width: 960px) { .proof > .stack:last-child { position: static; } }
