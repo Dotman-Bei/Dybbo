@@ -15,17 +15,20 @@ const lc = (a?: string | null) => (a ?? "").toLowerCase();
 
 type Check = { expected: string; got: string | null; pass: boolean | null; note?: string };
 
+// Each test and the file it lives in, under contracts/test/.
 const TESTS = [
-  ["test_NoCallPathToApproveOrTransfer", "The contract makes no call to Chog Genesis except ownerOf and the owner's code size"],
-  ["test_PossessorTransferFromReverts", "A possessor's transferFrom on Chog Genesis reverts"],
-  ["test_NoApprovalAfterAnyFlow", "isApprovedForAll(holder, Dybbo) stays false after every flow"],
-  ["test_HauntAtUntilRevertsLeaseExpired", "A haunt in the block the lease ends reverts with LeaseExpired"],
-  ["test_SaleMidLeaseRevertsOwnerChanged", "After a transfer mid-lease, the next haunt reverts with OwnerChanged"],
-  ["test_ClaimByNonOwnerReverts", "Only the holder can claim, and the holder gets exactly the escrow"],
-  ["test_EscrowFollowsTokenAfterSale", "Unclaimed escrow goes to the buyer"],
-  ["test_ContractHolderClosedByDefault", "A Chog held by a contract starts closed and opens after setTerms"],
-  ["test_ForkAgainstMainnetChog", "ownerOf integration against the real Chog Genesis contract"],
+  ["test_NoCallPathToApproveOrTransfer", "Proof.t.sol", "The contract's bytecode holds no approve or transfer selector, only ownerOf"],
+  ["test_PossessorTransferFromReverts", "Proof.t.sol", "A possessor's transferFrom on Chog Genesis reverts"],
+  ["test_NoApprovalAfterAnyFlow", "Proof.t.sol", "isApprovedForAll(holder, Dybbo) stays false after every flow"],
+  ["test_HauntAtUntilRevertsLeaseExpired", "Haunt.t.sol", "A haunt in the second the lease ends reverts with LeaseExpired"],
+  ["test_SaleMidLeaseRevertsOwnerChanged", "Haunt.t.sol", "After a transfer mid-lease, the next haunt reverts with OwnerChanged"],
+  ["test_ClaimByNonOwnerReverts", "Claim.t.sol", "Neither the possessor nor a stranger can claim the escrow"],
+  ["test_EscrowFollowsTokenAfterSale", "Claim.t.sol", "Unclaimed escrow goes to the buyer"],
+  ["test_ContractHolderClosedByDefault", "Lease.t.sol", "A Chog held by a contract starts closed and opens after setTerms"],
+  ["test_ForkAgainstMainnetChog", "Fork.t.sol", "The whole story against the real Chog Genesis on a Monad fork"],
 ] as const;
+const HAS_REPO = /github\.com\/[^/]+\/[^/]+/.test(REPO_URL);
+const testUrl = (file: string) => `${REPO_URL.replace(/\/$/, "")}/blob/main/contracts/test/${file}`;
 
 export function ProofView() {
   const names = useNames();
@@ -147,15 +150,20 @@ export function ProofView() {
           <section className="card" aria-labelledby="tests-h">
             <div className="card__head">
               <h2 id="tests-h">Tests that prove it</h2>
-              <a className="link card__meta" href={`${REPO_URL}`}>Repository</a>
+              <span className="card__meta">51 unit tests, 3 fork tests</span>
             </div>
             <ul className="rows">
-              {TESTS.map(([name, what]) => (
+              {TESTS.map(([name, file, what]) => (
                 <li className="row" key={name}>
                   <div className="row__main">
                     <div className="mono test__name">{name}</div>
                     <div className="row__sub">{what}</div>
                   </div>
+                  {HAS_REPO ? (
+                    <a className="link row__end mono test__file" href={testUrl(file)}>{file}</a>
+                  ) : (
+                    <span className="row__end mono test__file muted">{file}</span>
+                  )}
                 </li>
               ))}
             </ul>

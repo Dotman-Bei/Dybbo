@@ -9,6 +9,7 @@
 .check__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 16px; margin-top: 4px; }
 .check__grid dd { font-weight: 500; overflow-wrap: anywhere; }
 .test__name { font-size: 13px; }
+.test__file { font-size: 12px; }
 .proof__links { display: flex; gap: 16px; margin-top: 12px; }
 .proof__none { margin-top: 8px; font-weight: 600; }
 @media (max-width: 700px) {
