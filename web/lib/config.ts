@@ -13,6 +13,8 @@ export const EXPLORER = "https://monadscan.com";
 /** Set once the contract is deployed; until then the app runs in preview mode. */
 export const DYBBO_ADDRESS = (process.env.NEXT_PUBLIC_DYBBO_ADDRESS || "") as `0x${string}` | "";
 export const PREVIEW = DYBBO_ADDRESS === "";
+/** Set to "1" once the source is verified on MonadScan, so the claim page says so only when it is true. */
+export const VERIFIED = process.env.NEXT_PUBLIC_DYBBO_VERIFIED === "1";
 
 export const REPO_URL = process.env.NEXT_PUBLIC_REPO_URL || "https://github.com/";
 export const VIDEO_URL = process.env.NEXT_PUBLIC_VIDEO_URL || "";

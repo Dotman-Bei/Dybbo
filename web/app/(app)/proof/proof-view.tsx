@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { Address } from "viem";
 import { useNames } from "@/components/haunt-panel";
 import { approvals, ownerOf, simulateTake } from "@/lib/chain";
-import { CHOG_ADDRESS, DYBBO_ADDRESS, PREVIEW, REPO_URL, explorerCode, explorerRead } from "@/lib/config";
+import { CHOG_ADDRESS, DYBBO_ADDRESS, PREVIEW, REPO_URL, VERIFIED, explorerCode, explorerRead } from "@/lib/config";
 import { dybbo, type DybboErrorName } from "@/lib/dybbo";
 import { shortAddr } from "@/lib/format";
 import { useActor } from "@/lib/hooks";
@@ -166,7 +166,7 @@ export function ProofView() {
           <section className="card" aria-labelledby="contract-h">
             <div className="card__head">
               <h2 id="contract-h">The contract</h2>
-              {PREVIEW ? <span className="pill pill--closed">Not deployed yet</span> : <span className="pill pill--pos">Verified</span>}
+              {PREVIEW ? <span className="pill pill--closed">Not deployed yet</span> : <span className="pill pill--pos">{VERIFIED ? "Verified" : "Deployed"}</span>}
             </div>
             <dl className="well">
               <div className="kv"><dt>Dybbo</dt><dd className="mono">{DYBBO_ADDRESS ? shortAddr(DYBBO_ADDRESS) : "—"}</dd></div>
@@ -179,7 +179,7 @@ export function ProofView() {
             <p className="proof__links">
               {DYBBO_ADDRESS ? (
                 <>
-                  <a className="link" href={explorerCode(DYBBO_ADDRESS)}>Verified source</a>
+                  <a className="link" href={explorerCode(DYBBO_ADDRESS)}>{VERIFIED ? "Verified source" : "Code on MonadScan"}</a>
                   <a className="link" href={explorerRead(DYBBO_ADDRESS)}>Read contract</a>
                 </>
               ) : (
