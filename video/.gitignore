@@ -1,0 +1,7 @@
+node_modules/
+out/
+# Generated or captured media; the scripts rebuild them (voice needs a Gemini key, capture needs a fork).
+public/shots/
+public/vo/
+public/audio/
+public/chogs/
