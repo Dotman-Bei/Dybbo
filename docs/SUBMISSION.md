@@ -14,59 +14,65 @@ Dybbo
 
 ## Description
 
-> Paste from here to the end of this section. Limit 8,000 characters.
+> Paste from here to the end of this section. Limit 8,000 characters (this text: 6,252).
 
-**Possess any Chog Genesis for a few paid minutes. No approval, no custody. The fee waits in escrow for its holder.**
+Dybbo: possess any Chog for a few minutes
 
-*A possessor can never move, approve or list the Chog they control, and their control ends in the block the lease expires or the Chog changes hands.*
+There are 1,969 Chog Genesis and about 982 people who own one. Monad has more than 4.3 million wallets. The difference is the audience almost every Chog app leaves out. Open a holder-gated Chog game without a Chog and you get a guest mode, a practice mode, a "simulated judge" column. You watch. Someone else plays.
 
-**What it does**
+The obvious fix is to let holders lend. But Chog Genesis has no rental role, so lending means sending the NFT to an escrow, wrapping it, or signing setApprovalForAll, which hands a contract the power to move every NFT in the wallet. That power is where NFTs go missing. reNFT renters could hijack rented tokens during the handoff (Code4rena 2024, issue #588). In one 2026 sweep, a single forgotten approval let one wallet take 25,994 NFTs from 3,033 wallets. Holders are right to say no.
 
-Most Chog apps are for holders. A judge or a Monad user without a ~$122 Chog gets a spectator or "guest" mode. Dybbo lets anyone take control of any Chog Genesis for 1 to 10 minutes:
+So we asked a narrower question. Can someone without a Chog really control one for a while, without the holder giving up anything at all?
 
-- **Possess.** Pay the Chog's price per minute (0.01 MON by default). The whole fee goes into that token's escrow. The NFT never moves: a possession is a record inside the Dybbo contract.
-- **Haunt.** While the lease is live, act as that Chog: leave Boo, Slime or Hex on another Chog. The mark sits beside the target's art for 24 hours, signed "by #1462, possessed". One every 15 seconds, one per target per day, eight live marks per Chog.
-- **Strike back.** Holders haunt with their own Chog, no lease needed, so a haunted holder has a reason to come back.
-- **Claim.** Whoever holds the Chog when they claim takes its escrow. Holders never sign up: every Chog in a wallet is open from the first block and earns by default. They can set their own price or close it.
+WHAT DYBBO DOES
 
-**What is new**
+The name comes from the dybbuk, the spirit in folklore that borrows a living body and leaves when it is driven out.
 
-Lending an NFT today means `setApprovalForAll`, an escrow, or a wrapper. Each gives a contract power to move the NFT. That power is how renters hijacked reNFT rentals (Code4rena 2024, issue #588), and how one forgotten approval let a sweep take 25,994 NFTs from 3,033 wallets in 2026. The one rental-like Chogathon entry we found relies on holder-signed hires checked by a server, so nothing is enforced on chain and only opted-in Chogs are available.
+Pick any Chog, pay its price per minute (0.01 MON by default) for 1 to 10 minutes, and you act as it. The whole fee drops into that Chog's escrow. The NFT never moves. A possession is only a record inside the Dybbo contract: who, which Chog, until when, and who owned it when the lease began.
 
-Dybbo takes a different path:
+While the timer runs, you haunt. Leave Boo, Slime or Hex on another Chog and the mark sits beside its art on its public page for a day, signed "by #1462, possessed". One haunt every 15 seconds, one per target per day, eight live marks per Chog. The Chog's metadata and image never change.
 
-- **No custody and no approval, ever.** The contract's only call to Chog Genesis is `ownerOf`. A test scans its bytecode for any approve or transfer selector and finds none.
-- **Enforced at every action.** Each haunt re-reads `ownerOf` in the same call. A lease ends in the block it expires (`LeaseExpired`) or the block the Chog changes hands (`OwnerChanged`). No server re-checks anything.
-- **Open by default.** All 1,968 Chogs in wallets, including EIP-7702 smart-account wallets, are possessable on day one, and every holder earns without signing up. The one Chog held by a contract starts closed, so nobody can borrow a Chog for a block to drain its escrow (the trick used to claim 60,564 APE with borrowed apes).
-- **Unclaimed fees follow the token.** A buyer can claim what the Chog earned before the sale.
+Holders don't need a lease to haunt with their own Chogs, so a haunted holder can strike back. Holders never sign up either: every Chog in a wallet is open from the first block and earns by default. Whoever holds the Chog when they claim takes its escrow. They can set their own price or close their Chog.
 
-**Why Chog matters**
+HOW IT HOLDS
 
-Take the NFT out and nothing is left. The Chog is:
+The contract touches Chog Genesis in exactly one way: it reads ownerOf. There is no code path to approve or transfer, and a test scans the deployed bytecode for any approve or transfer selector and finds none.
 
-- **the body** being possessed,
-- **the payee**, since the escrow is keyed to the token and claimable only by its current `ownerOf`,
-- **the off switch**, since a lease is void the moment `ownerOf` changes.
+Each haunt re-reads ownerOf inside the same transaction. A lease is live only while the clock hasn't run out and the Chog still belongs to whoever owned it when the lease began. Control ends in the block the lease expires (LeaseExpired) or the block the Chog changes hands (OwnerChanged). No server checks anything later, and nothing needs revoking.
 
-It is also Chog's lore made playable. Anyone can become the curious, mischievous kid who causes chaos.
+Escrow is keyed to the token, not to a person, and pays only the current ownerOf. Sell your Chog and the buyer can claim what it earned before the sale. The token page says so before anyone buys.
 
-**Why Monad**
+Two edge cases shaped the rules. Chogs held by contracts start closed, because a lending vault could let someone borrow a Chog for one block just to drain its escrow, the trick that once claimed 60,564 APE with five borrowed apes. Smart-account (EIP-7702) wallets count as normal wallets, which keeps 1,968 of the 1,969 Chogs open on day one. And there is no admin: no owner, no pause, no upgrade, no protocol fee, no function that can touch escrowed MON.
 
-Every haunt is its own transaction with `ownerOf` read inside it, so a sale or an expiry takes effect on the next block. That needs Monad's 300 ms blocks, 600 ms finality and sub-cent fees. On a slower chain, or on a server, ownership would be re-checked on a timer.
+DON'T TRUST US, RUN IT
 
-**Test it without a Chog**
+During a possession, press "Try to take it". The app asks the real Chog Genesis contract to move the Chog to you, and it refuses: ERC721InsufficientApproval. Beside the refusal sit the approval reads: approved for all is false, the approved address is empty. Wait out the timer and "Try one more haunt" reverts with LeaseExpired. The /proof page runs all three checks as free simulations against mainnet.
 
-Open https://dybbo.vercel.app/judges. A wallet with 0.1 MON covers every step: possess for 1 minute, haunt once, press "Try to take it" (the real Chog Genesis reverts `ERC721InsufficientApproval`), then haunt again after the timer (`LeaseExpired`). The /proof page runs the three checks as free simulations against mainnet.
+WHAT'S NEW
 
-**Contract**
+Every way to lend an NFT today gives a contract power to move it. Dybbo lends control without handing over any power. The possessor gets a role inside Dybbo, enforced by Dybbo, and the Chog never leaves its holder's wallet. Ownership is checked on chain at every action, not by a server on a timer. The collection is open by default, so nobody has to list anything. Fees belong to the token and follow it through sales.
 
-- Dybbo on Monad mainnet: `0x908D8899795072985e35CB86dA3Aff88CE4e72e9`
-- Source verified on Sourcify (exact match): https://repo.sourcify.dev/143/0x908D8899795072985e35CB86dA3Aff88CE4e72e9
-- No admin, no pause, no upgrade, no protocol fee.
-- 53 Foundry unit tests and 3 fork tests against the real Chog Genesis on a Monad fork.
-- Gas was measured on Monad itself with state overrides.
+It needs Monad to work. Every haunt is its own transaction with ownerOf read inside it, and with 300 ms blocks and sub-cent fees, a sale or an expiry takes effect on the very next block. On a slower, pricier chain, the practical design is a server that re-checks ownership now and then, which is the exact weakness Dybbo exists to avoid.
 
-**Pre-existing work:** none.
+A THIRD WAY TO HOLD AN NFT
+
+You can own an NFT or look at one. Dybbo adds a third option: be one, briefly. A mark signed "by #1462, possessed" is a public act by a Chog someone else owns, paid for in advance, with the holder's consent built in by default. A Chog earns while it sits in a wallet, with no listing. And because a live lease is public on chain (leaseOf), any holder-gated Chog game could let a possessor play "as this Chog" instead of benching them in spectator mode.
+
+WHY IT HAS TO BE CHOG
+
+Pull the NFT out and nothing is left. The Chog is the body being possessed. It is the payee, since escrow is keyed to its token ID and only its current owner can claim. It is the off switch, since the lease dies the moment ownerOf changes. And Chog's own lore is a curious, mischievous kid who causes chaos. Dybbo hands that role to anyone for a few minutes.
+
+WHY PEOPLE COME BACK
+
+Getting haunted is a reason to return. The mark names the Chog that left it, and answering costs only gas. Marks expire after 24 hours, so staying haunted, or having the last word, means coming back. Fees keep piling up for holders until they claim. Leases are short enough to do again with another Chog, and a possessor can run several at once. During Chogtober, one possession night leaves the collection visibly haunted the next day.
+
+We won't call retention proven. The contract went live on 2026-10-22, and its counters (possessions, haunts, distinct possessors, fees paid and claimed) are public through stats(). That is how we'll know.
+
+TRY IT
+
+No Chog needed. https://dybbo.vercel.app/judges walks through the full loop with about 0.1 MON.
+
+Contract: 0x908D8899795072985e35CB86dA3Aff88CE4e72e9 on Monad mainnet, source verified on Sourcify. 53 Foundry unit tests, plus 3 fork tests against the real Chog Genesis.
 
 ## Demo video
 
