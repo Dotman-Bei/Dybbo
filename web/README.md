@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dybbo web
 
-## Getting Started
-
-First, run the development server:
+Next.js 16 app for Dybbo on Monad mainnet. Design and copy: [`../docs/FRONTEND.md`](../docs/FRONTEND.md).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local   # the mainnet contract; remove NEXT_PUBLIC_DYBBO_ADDRESS for preview mode
+npm install
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Use |
+|---|---|
+| `NEXT_PUBLIC_DYBBO_ADDRESS` | The Dybbo contract. Unset = preview mode (rules simulated in the browser). |
+| `NEXT_PUBLIC_DYBBO_VERIFIED`, `NEXT_PUBLIC_DYBBO_SOURCE_URL` | Show and link the verified source on `/proof`. |
+| `NEXT_PUBLIC_RPC_URL` | A local fork instead of the public Monad RPCs (`anvil --fork-url https://rpc.monad.xyz --chain-id 143`). |
+| `NEXT_PUBLIC_REPO_URL`, `NEXT_PUBLIC_VIDEO_URL` | Links in the footer, the judge guide and `/proof`. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Data
 
-## Learn More
+- `data/chogs.json`: name, image and traits for all 1,969 Chogs, read from `tokenURI` on chain (`scripts/snapshot.mjs`, re-run if the base URI changes).
+- `lib/dybbo/abi.ts`: generated from the compiled contract (`contracts/script/export-abi.mjs`).
+- `/api/image/[id]`: Chog art through IPFS gateways with fallback, resized once and served with a one-year cache header.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy (Vercel)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Import the GitHub repo and set **Root Directory** to `web`.
+2. Add the variables from `.env.example` under Settings → Environment Variables.
+3. Deploy. The snapshot ships with every route (`outputFileTracingIncludes` in `next.config.ts`).
