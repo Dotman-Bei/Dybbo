@@ -1,0 +1,56 @@
+<!doctype html>
+<!--
+  Dybbo banner. One source, three sizes: banner.html?size=submission | x | og
+  Values from docs/FRONTEND.md: slime #3ddc97 field, deep green #0c1f17 ink, Chillax 600,
+  flat shapes only (no gradient, no glow), nothing laid over the Chog art.
+  The art is CHOG #1462 (token 1), fetched from its tokenURI metadata, shown as-is.
+  The possession: a flat deep-green double of the Chog (the spirit) displaced behind it, tilted the other
+  way, with the one slime eye from the Dybbo mark. It sits behind the art and never touches it.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dybbo banner</title>
+<style>
+  @font-face { font-family: "Chillax"; src: url("../../web/public/fonts/chillax-500.woff2") format("woff2"); font-weight: 500; }
+  @font-face { font-family: "Chillax"; src: url("../../web/public/fonts/chillax-600.woff2") format("woff2"); font-weight: 600; }
+  :root { --slime: #3ddc97; --ink: #0c1f17; }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { background: var(--slime); overflow: hidden; }
+  body { font-family: "Chillax", ui-rounded, system-ui, sans-serif; color: var(--ink); }
+  .banner { position: relative; width: var(--w); height: var(--h); display: flex; align-items: center; justify-content: center; gap: var(--gap); }
+  .words { display: flex; flex-direction: column; align-items: flex-start; }
+  .logo { height: var(--logo); display: block; }
+  .tagline { font-weight: 600; font-size: var(--tag); letter-spacing: -0.03em; line-height: 1.04; margin-top: var(--tagGap); }
+  .small { font-weight: 500; font-size: var(--small); margin-top: var(--smallGap); }
+  /* The Chog and the spirit stepping into it. --s is the Chog's size. */
+  .possession { position: relative; width: calc(var(--s) * 1.12); height: calc(var(--s) * 1.12); flex: none; }
+  .spirit { position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); background: var(--ink); transform: rotate(5deg); }
+  .spirit i { position: absolute; left: calc(var(--s) * 0.06); top: calc(var(--s) * 0.035); width: calc(var(--s) * 0.075); height: calc(var(--s) * 0.075); border-radius: 50%; background: var(--slime); }
+  .chog { position: absolute; left: calc(var(--s) * 0.12); top: calc(var(--s) * 0.12); width: var(--s); height: var(--s); transform: rotate(-4deg); display: block; }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="words">
+    <img class="logo" src="../../web/public/brand/dybbo-logo.svg" alt="Dybbo">
+    <p class="tagline">Possess any Chog.<br>Pay its holder.</p>
+    <p class="small">Chogathon 2026 · Built on Monad</p>
+  </div>
+  <div class="possession">
+    <div class="spirit" aria-hidden="true"><i></i></div>
+    <img class="chog" src="chogs/chog-1462.webp" alt="CHOG #1462">
+  </div>
+</div>
+<script>
+  // Sizes in px. Everything sits inside the central 80% (10% margin on each side).
+  const SIZES = {
+    submission: { w: 1600, h: 900, s: 520, gap: 72, logo: 144, tag: 64, tagGap: 36, small: 26, smallGap: 28 },
+    x:          { w: 1500, h: 500, s: 300, gap: 88, logo: 116, tag: 46, tagGap: 22, small: 20, smallGap: 18 },
+    og:         { w: 1200, h: 630, s: 380, gap: 48, logo: 106, tag: 46, tagGap: 24, small: 21, smallGap: 20 },
+  };
+  const c = SIZES[new URLSearchParams(location.search).get("size")] || SIZES.submission;
+  for (const [k, v] of Object.entries(c)) document.documentElement.style.setProperty(`--${k}`, v + "px");
+</script>
+</body>
+</html>
