@@ -30,9 +30,14 @@ export async function ownerOf(id: number): Promise<Address> {
   return publicClient.readContract({ address: CHOG_ADDRESS, abi: chogAbi, functionName: "ownerOf", args: [BigInt(id)] });
 }
 
+/** An EIP-7702 wallet's only code is the delegation designator 0xef0100 ‖ address. */
+export const isDelegation = (code?: Hex) => !!code && /^0xef0100[0-9a-f]{40}$/i.test(code);
+
+/** A real contract (vault, pool, Safe), as the Dybbo contract judges it. 7702 wallets are wallets. */
+export const hasContractCode = (code?: Hex) => !!code && code !== "0x" && !isDelegation(code);
+
 export async function isContract(addr: Address): Promise<boolean> {
-  const code = await publicClient.getCode({ address: addr });
-  return !!code && code !== "0x";
+  return hasContractCode(await publicClient.getCode({ address: addr }));
 }
 
 export async function tokensOfOwner(addr: Address): Promise<number[]> {
@@ -121,6 +126,6 @@ export async function ownersRange(from: number, to: number) {
     const group = unique.slice(s, s + 20);
     codes.push(...(await Promise.all(group.map((a) => codeWithRetry(a)))));
   }
-  const contracts = new Set(unique.filter((_, i) => codes[i] && codes[i] !== "0x"));
+  const contracts = new Set(unique.filter((_, i) => hasContractCode(codes[i])));
   return ids.map((id, i) => ({ id, owner: owners[i], ownerIsContract: contracts.has(owners[i].toLowerCase() as Address) }));
 }
