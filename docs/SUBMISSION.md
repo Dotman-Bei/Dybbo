@@ -1,8 +1,7 @@
 # Chogathon 2026 submission
 
-Fields of the submission form (PRD §2.5), ready to paste. Two values are still to fill:
+Fields of the submission form (PRD §2.5), ready to paste. One value is still to fill:
 
-- `{APP_URL}`: the production URL once the app is deployed
 - `{VIDEO_URL}`: the unlisted YouTube or Google Drive link to the demo video
 
 Usage numbers under "What's next" are read from the contract's `stats()` just before submitting (command at the end).
@@ -57,7 +56,7 @@ Every haunt is its own transaction with `ownerOf` read inside it, so a sale or a
 
 **Test it without a Chog**
 
-Open {APP_URL}/judges. A wallet with 0.1 MON covers every step: possess for 1 minute, haunt once, press "Try to take it" (the real Chog Genesis reverts `ERC721InsufficientApproval`), then haunt again after the timer (`LeaseExpired`). The /proof page runs the three checks as free simulations against mainnet.
+Open https://dybbo.vercel.app/judges. A wallet with 0.1 MON covers every step: possess for 1 minute, haunt once, press "Try to take it" (the real Chog Genesis reverts `ERC721InsufficientApproval`), then haunt again after the timer (`LeaseExpired`). The /proof page runs the three checks as free simulations against mainnet.
 
 **Contract**
 
@@ -75,7 +74,7 @@ Open {APP_URL}/judges. A wallet with 0.1 MON covers every step: possess for 1 mi
 
 ## App link
 
-{APP_URL}
+https://dybbo.vercel.app
 
 ## Tech stack
 
@@ -91,7 +90,7 @@ https://github.com/Dotman-Bei/Dybbo
 
 No Chog needed. Use any Monad mainnet wallet with about 0.1 MON (chainId 143, RPC https://rpc.monad.xyz).
 
-1. Open {APP_URL}/judges and press "Possess #… for 1 minute" (a live open Chog), or open any Chog from Browse.
+1. Open https://dybbo.vercel.app/judges and press "Possess #… for 1 minute" (a live open Chog), or open any Chog from Browse.
    - Expect: a fee of 0.01 MON to the holder plus about 0.04 MON of gas, then the session page with a running timer.
 2. In the session, keep the random target, pick Boo, Slime or Hex, press Haunt.
    - Expect: "Confirmed" with a block number, and the mark on the target's page signed "by #…, possessed".
@@ -99,7 +98,7 @@ No Chog needed. Use any Monad mainnet wallet with about 0.1 MON (chainId 143, RP
    - Expect: the real Chog Genesis reverts `ERC721InsufficientApproval`, and both approval reads say false or zero. It runs as a free simulation; "Send it for real" sends the transaction (a revert still pays gas on Monad).
 4. Wait for the timer, then press "Try one more haunt".
    - Expect: `LeaseExpired`.
-5. Open {APP_URL}/proof, enter the Chog you possessed, and press "Run the three checks".
+5. Open https://dybbo.vercel.app/proof, enter the Chog you possessed, and press "Run the three checks".
    - Expect: three passes. Then open the verified source.
 
 What each revert proves:

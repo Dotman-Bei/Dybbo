@@ -4,17 +4,19 @@
 
 > A possessor can never move, approve or list the Chog they control, and their control ends in the block the lease expires or the Chog changes hands.
 
+**Live app: https://dybbo.vercel.app**
+
 Built solo for [Chogathon 2026](https://chogathon.chog.xyz/). Unofficial community project; Chog art is shown with permission and never altered.
 
 ## Try it without a Chog
 
-1. Open the app, pick any open Chog (or press **Possess a random Chog**).
+1. Open [dybbo.vercel.app](https://dybbo.vercel.app), pick any open Chog (or press **Possess a random Chog**).
 2. Possess it for 1 minute: 0.01 MON to its holder, plus about 0.04 MON of gas.
 3. Haunt another Chog with Boo, Slime or Hex. The mark shows on that Chog's page for 24 hours, signed "by #…, possessed".
 4. Press **Try to take it**. The real Chog Genesis contract refuses: `ERC721InsufficientApproval`.
 5. When the timer ends, press **Try one more haunt**: `LeaseExpired`.
 
-A wallet with 0.1 MON covers every step. The full guide is the app's `/judges` page.
+A wallet with 0.1 MON covers every step. The full guide is [dybbo.vercel.app/judges](https://dybbo.vercel.app/judges).
 
 ## The contract
 
@@ -26,7 +28,7 @@ A wallet with 0.1 MON covers every step. The full guide is the app's `/judges` p
 | Admin, pause, upgrade, protocol fee | None |
 | Calls to Chog Genesis | `ownerOf` only (plus the holder's code size) |
 
-**The three reverts a judge can trigger,** each also runnable for free on the app's `/proof` page:
+**The three reverts a judge can trigger,** each also runnable for free on [dybbo.vercel.app/proof](https://dybbo.vercel.app/proof):
 
 | Try | Result | Proves |
 |---|---|---|
