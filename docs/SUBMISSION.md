@@ -92,29 +92,45 @@ https://github.com/Dotman-Bei/Dybbo
 
 ## Judge access instructions
 
-> Organizers only. Limit 8,000 characters.
+> Organizers only. Limit 8,000 characters (this text: 2,231). Plain text, ready to paste.
 
-No Chog needed. Use any Monad mainnet wallet with about 0.1 MON (chainId 143, RPC https://rpc.monad.xyz).
+```text
+No login, no invite and no Chog needed. Dybbo runs on Monad mainnet. You only need a Monad wallet (MetaMask, Rabby or similar) with about 0.1 MON. Network: Monad, chain ID 143, RPC https://rpc.monad.xyz. The app offers to add or switch the network for you.
 
-1. Open https://dybbo.vercel.app/judges and press "Possess #… for 1 minute" (a live open Chog), or open any Chog from Browse.
-   - Expect: a fee of 0.01 MON to the holder plus about 0.04 MON of gas, then the session page with a running timer.
-2. In the session, keep the random target, pick Boo, Slime or Hex, press Haunt.
-   - Expect: "Confirmed" with a block number, and the mark on the target's page signed "by #…, possessed".
+THE FULL LOOP (about 3 minutes)
+
+1. Open https://dybbo.vercel.app/judges, connect your wallet, and press "Possess #... for 1 minute" (a live open Chog). You can also pick any Chog from Browse.
+   Expect: a fee of 0.01 MON paid into that Chog's escrow, plus about 0.04 MON of gas. You land on the session page with a running timer.
+
+2. In the session, keep the random target, pick Boo, Slime or Hex, and press Haunt.
+   Expect: "Confirmed" with a block number. Open the target's page and the mark is there, signed "by #..., possessed".
+
 3. Press "Try to take it".
-   - Expect: the real Chog Genesis reverts `ERC721InsufficientApproval`, and both approval reads say false or zero. It runs as a free simulation; "Send it for real" sends the transaction (a revert still pays gas on Monad).
-4. Wait for the timer, then press "Try one more haunt".
-   - Expect: `LeaseExpired`.
+   Expect: the real Chog Genesis contract refuses with ERC721InsufficientApproval, and both approval reads show false or empty. This runs as a free simulation. "Send it for real" sends the transaction if you want it on MonadScan (a reverted transaction still pays gas on Monad).
+
+4. Wait for the timer to end, then press "Try one more haunt".
+   Expect: LeaseExpired.
+
 5. Open https://dybbo.vercel.app/proof, enter the Chog you possessed, and press "Run the three checks".
-   - Expect: three passes. Then open the verified source.
+   Expect: three passes, with a link to the verified source.
 
-What each revert proves:
+WHAT EACH RESULT PROVES
 
-- `ERC721InsufficientApproval`: a possessor can never move, approve or list the Chog.
-- `LeaseExpired`: control ends in the block the lease expires.
-- `OwnerChanged`: control ends when the Chog changes hands. A holder must sell to see it live, so it is shown in the fork test `test_SaleMidLeaseRevertsOwnerChanged`.
-- `NotOwner` on claim: the fee belongs to whoever holds the Chog.
+- ERC721InsufficientApproval: a possessor can never move, approve or list the Chog.
+- LeaseExpired: control ends in the block the lease expires.
+- NotOwner (press "Try to claim it" on any Chog you don't hold): the fee belongs only to whoever holds the Chog.
+- OwnerChanged: control ends the moment the Chog changes hands. Seeing it live needs a holder to sell mid-lease, so it is covered by the fork test test_SaleMidLeaseRevertsOwnerChanged in the repo.
 
-Without a wallet, every page is readable, and /me?address=0x… shows any holder's Chogs, escrow and marks read-only.
+WITHOUT A WALLET
+
+Every page is readable without connecting. https://dybbo.vercel.app/me?address=0x... shows any holder's Chogs, escrow and marks, read-only.
+
+LINKS
+
+App: https://dybbo.vercel.app
+Contract: 0x908D8899795072985e35CB86dA3Aff88CE4e72e9 (source verified on Sourcify: https://repo.sourcify.dev/143/0x908D8899795072985e35CB86dA3Aff88CE4e72e9)
+Code: https://github.com/Dotman-Bei/Dybbo
+```
 
 ## Go-to-market
 
