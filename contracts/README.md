@@ -1,5 +1,7 @@
 # Dybbo contracts
 
+**Monad mainnet:** [`0xbe86343e5C69f305b61680e142adA94fb4394068`](https://monadscan.com/address/0xbe86343e5C69f305b61680e142adA94fb4394068), deployed 2026-10-22 with a default price of 0.01 MON a minute. Details in [deployments.json](deployments.json).
+
 Foundry project for the Dybbo contract (PRD §8). Monad mainnet, chainId 143.
 
 ```bash
