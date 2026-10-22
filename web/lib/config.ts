@@ -15,6 +15,8 @@ export const DYBBO_ADDRESS = (process.env.NEXT_PUBLIC_DYBBO_ADDRESS || "") as `0
 export const PREVIEW = DYBBO_ADDRESS === "";
 /** Set to "1" once the source is verified on MonadScan, so the claim page says so only when it is true. */
 export const VERIFIED = process.env.NEXT_PUBLIC_DYBBO_VERIFIED === "1";
+/** Where the verified source can be read: Sourcify's exact match, or MonadScan once it is verified there. */
+export const SOURCE_URL = process.env.NEXT_PUBLIC_DYBBO_SOURCE_URL || "";
 
 export const REPO_URL = process.env.NEXT_PUBLIC_REPO_URL || "https://github.com/";
 export const VIDEO_URL = process.env.NEXT_PUBLIC_VIDEO_URL || "";
