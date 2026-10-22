@@ -141,6 +141,51 @@ Code: https://github.com/Dotman-Bei/Dybbo
 - **Strike-backs bring people back.** A haunted holder sees who marked their Chog and can haunt back with it for free (gas only). That brings returning holders, not only one-off renters.
 - **Other Chog apps can build on it.** A live lease is a public on-chain fact (`leaseOf`). Other Chog games could let a possessor play "as this Chog" for the lease's duration, so holder-gated games stop needing spectator modes. An SDK is out of scope for the hackathon.
 
+## Plan
+
+> Optional. Shows collapsed on the project page. Limit 8,000 characters (this text: 3,130). Plain text, ready to paste.
+
+```text
+WHO USES IT
+
+Possessors. Monad users who don't own a Chog. About 982 people hold the 1,969 Chog Genesis, while Monad has more than 4.3 million wallets. A Chog costs around $122, so Dybbo lets them act as one without buying it. They pay 0.01 MON a minute by default for one to ten minutes.
+
+Holders. Every holder is already a user, whether they know it or not. All 1,968 Chogs in wallets are open from the first block, so a holder's first contact with Dybbo is finding fees waiting for their Chog. They can claim, set their own price, or close their Chog, all from /me.
+
+Haunted holders. When a mark lands on your Chog, its page shows which Chog left it. Holders haunt with their own Chogs for free (gas only), so being haunted turns into a reason to play.
+
+Judges and spectators. Everything is readable without a wallet, and /me?address=0x... shows any holder's Chogs, escrow and marks.
+
+HOW IT GROWS
+
+1. Holders get paid without signing up. Each holder is one claim away from seeing their Chog earn. Earnings and marks are easy to share on X, and each share points other holders back to their own escrow.
+
+2. Haunts spread through the collection. Every haunt lands on someone else's Chog, and that holder can answer. Marks last 24 hours, so a busy night leaves the collection visibly haunted the next day and gives people a reason to return.
+
+3. Possession nights during Chogtober. We will ask the Chog team to feature community nights where people possess and haunt together. No setup is needed, since the whole collection is already open.
+
+4. Other Chog apps can build on it. A live lease is public on chain (leaseOf). Any holder-gated Chog game can let a possessor play "as this Chog" for the lease's length, instead of a spectator mode. That makes every Chog app a way into Dybbo, and Dybbo a way into every Chog app.
+
+WHERE WE ARE
+
+The contract went live on Monad mainnet on 2026-10-22. Its counters are public through stats(). At the time of writing: 1 possession, 2 haunts, 1 possessor, 1 Chog possessed, 0.05 MON paid into escrow, 0 MON claimed. These are our own test runs, and we are reporting them as they are.
+
+WHAT WE MEASURE
+
+Distinct possessors, possessions per possessor (do people come back), haunts per lease, strike-backs (holders answering a haunt), share of fees claimed by holders, and distinct Chogs ever possessed. All of it is on chain, so anyone can check our numbers.
+
+NEXT
+
+- Notifications when your Chog is haunted, so strike-backs happen while it still matters.
+- A strike-back shortcut in the activity feed.
+- $CHOG as an optional fee currency, if the Chog team wants it. MON stays the default, since $CHOG liquidity is thin.
+- A small SDK so other Chog apps can read and honour a live lease in a few lines.
+
+HOW IT SUSTAINS ITSELF
+
+Dybbo takes no fee. Every MON goes to holders, which is the point: holders earn by default, so nobody has a reason to opt out. The deployed contract has no owner, no pause and no upgrade, so its rules cannot change under anyone. If Dybbo outgrows a hackathon, any fee would come through a new contract that holders choose to use, never through a change to this one.
+```
+
 ## What's next and usage
 
 Usage is read from the contract (`stats()`) on 2026-10-22, after the first mainnet run:
