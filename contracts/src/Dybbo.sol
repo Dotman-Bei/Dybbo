@@ -282,7 +282,7 @@ contract Dybbo {
         address holder = CHOG.ownerOf(id);
         uint256 p;
         (p, closed, defaults) = _effectiveTerms(id, holder);
-        return (uint96(p), closed, defaults, holder.code.length > 0);
+        return (uint96(p), closed, defaults, _isContract(holder));
     }
 
     function escrowOf(uint256 id) external view returns (uint256) {
@@ -398,11 +398,21 @@ contract Dybbo {
         return block.timestamp < l.until && l.ownerAtStart == holder;
     }
 
-    /// Wallets without code are open at the default price from the first block. Holders with code
-    /// (vaults, pools, Safes, EIP-7702 wallets) start closed, so a borrowed Chog can't drain its escrow.
+    /// True for real contracts (vaults, pools, Safes). An EIP-7702 wallet's only code is the 23-byte
+    /// delegation designator 0xef0100 ‖ address; it is still one person's wallet, so it counts as a wallet.
+    function _isContract(address a) internal view returns (bool) {
+        uint256 size = a.code.length;
+        if (size == 0) return false;
+        if (size != 23) return true;
+        bytes memory c = a.code;
+        return !(c[0] == 0xef && c[1] == 0x01 && c[2] == 0x00);
+    }
+
+    /// Wallets, including EIP-7702 smart-account wallets, are open at the default price from the first
+    /// block. Contract holders (vaults, pools, Safes) start closed, so a borrowed Chog can't drain its escrow.
     function _effectiveTerms(uint256 id, address holder) internal view returns (uint256 price, bool closed, bool defaults) {
         Terms memory t = _terms[id];
         if (t.setBy == holder && holder != address(0)) return (t.price, t.closed, false);
-        return (DEFAULT_PRICE, holder.code.length > 0, true);
+        return (DEFAULT_PRICE, _isContract(holder), true);
     }
 }

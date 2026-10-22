@@ -165,6 +165,29 @@ contract LeaseTest is Base {
         _possess(possessor, 5, 1);
     }
 
+    // ------------------------------------------------------------ EIP-7702 wallets
+
+    function test_SevenSevenZeroTwoWalletOpenByDefault() public {
+        address smart = makeAddr("smart");
+        vm.etch(smart, abi.encodePacked(hex"ef0100", makeAddr("delegator")));
+        chog.mint(smart, 6);
+        (, bool closed, bool defaults, bool isContract) = dybbo.termsOf(6);
+        assertFalse(closed);
+        assertTrue(defaults);
+        assertFalse(isContract);
+        _possess(possessor, 6, 1);
+    }
+
+    function test_TwentyThreeByteContractStillCountsAsContract() public {
+        address odd = makeAddr("odd");
+        // Same length as a delegation designator, but ordinary contract code: it stays closed.
+        // (Code starting with 0xef can only be a valid designator, per EIP-3541 and EIP-7702.)
+        vm.etch(odd, abi.encodePacked(bytes23(hex"5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b00")));
+        chog.mint(odd, 7);
+        (, bool closed,, bool isContract) = dybbo.termsOf(7);
+        assertTrue(closed && isContract);
+    }
+
     function testFuzz_PaymentMustBeExact(uint8 mins, uint256 value) public {
         mins = uint8(bound(mins, 1, 10));
         value = bound(value, 0, 10 ether);
