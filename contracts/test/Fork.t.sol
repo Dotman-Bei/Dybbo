@@ -70,12 +70,18 @@ contract ForkTest is Test {
         assertEq(buyer.balance, 0.05 ether);
     }
 
+    /// Real contracts start closed; EIP-7702 smart-account wallets, which hold most "coded" Chogs on
+    /// mainnet, are wallets and start open.
     function test_ForkContractHoldersStartClosed() public view {
-        Dybbo.Status[] memory st = dybbo.statusBatch(1, 200);
+        Dybbo.Status[] memory st = dybbo.statusBatch(1, 400);
+        uint256 delegated;
         for (uint256 i; i < st.length; ++i) {
-            bool holderHasCode = CHOG.ownerOf(i + 1).code.length > 0;
-            assertEq(st[i].closed, holderHasCode);
+            bytes memory code = CHOG.ownerOf(i + 1).code;
+            bool designator = code.length == 23 && code[0] == 0xef && code[1] == 0x01 && code[2] == 0x00;
+            if (designator) ++delegated;
+            assertEq(st[i].closed, code.length > 0 && !designator);
         }
+        assertGt(delegated, 0, "expected some 7702 holders among the first 400 tokens");
     }
 
     function test_ForkStatusBatchCoversTheCollection() public view {
