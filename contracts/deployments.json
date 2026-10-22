@@ -1,14 +1,23 @@
 {
   "monad-mainnet": {
     "chainId": 143,
-    "Dybbo": "0xbe86343e5C69f305b61680e142adA94fb4394068",
+    "Dybbo": "0x908D8899795072985e35CB86dA3Aff88CE4e72e9",
     "chogGenesis": "0xc96d31F8626c6D03Fae5dCD3d61e3FB9F4a73763",
     "deployer": "0x5e3cC65cA2f1a6AC3Bf75f7110E50d296F127fe6",
-    "transaction": "0x04b32d3540cb7853ff18b5597500505f6b7beb7515a3bcec5db76ac559a3ff95",
-    "block": 115485922,
+    "transaction": "0x5fa0c8a9fe812332e05798a4e8b3970ea81b786ff4706033fd7acf36d6ca2d94",
+    "block": 115489804,
     "deployedAt": "2026-10-22",
     "constructor": { "defaultPriceWei": "10000000000000000", "minPriceWei": "1000000000000000", "maxPriceWei": "1000000000000000000" },
-    "gasLimit": 2749657,
-    "costMon": "0.280465"
-  }
+    "gasLimit": 2837162,
+    "costMon": "0.289390",
+    "verified": "https://repo.sourcify.dev/143/0x908D8899795072985e35CB86dA3Aff88CE4e72e9"
+  },
+  "superseded": [
+    {
+      "Dybbo": "0xbe86343e5C69f305b61680e142adA94fb4394068",
+      "transaction": "0x04b32d3540cb7853ff18b5597500505f6b7beb7515a3bcec5db76ac559a3ff95",
+      "block": 115485922,
+      "reason": "Counted EIP-7702 smart-account wallets as contracts, so 791 Chogs started closed. Never used: no leases, fees or marks."
+    }
+  ]
 }
