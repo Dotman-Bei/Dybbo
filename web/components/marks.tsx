@@ -42,13 +42,16 @@ export function MarkGlyph({ id, size = 24, title }: { id: number; size?: number;
   );
 }
 
+/** The Dybbo mark: a D (the host) whose counter is a one-eyed wisp (the spirit inside it).
+ *  Same geometry as public/brand/dybbo-mark.svg. Drawn in the current text colour. */
 export function DybboMark({ size = 28 }: { size?: number }) {
-  // A slime-green body with a bite taken out of it: something has moved in.
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M16 2a14 14 0 1 0 13.6 10.7A6 6 0 0 1 21.3 4 14 14 0 0 0 16 2Z" fill="#3ddc97" stroke="#0c1f17" strokeWidth="2" />
-      <circle cx="11.5" cy="15" r="2" fill="#0c1f17" />
-      <circle cx="19" cy="15" r="2" fill="#0c1f17" />
+    <svg width={size} height={size} viewBox="8 6 52 52" aria-hidden="true">
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M18 8H32A24 24 0 0 1 32 56H18A4 4 0 0 1 14 52V12A4 4 0 0 1 18 8ZM25 27A9.5 9.5 0 0 1 44 27V34C44 41 39 45 32 45.5L25 46ZM33.6 27.8a2.9 2.9 0 1 0 5.8 0a2.9 2.9 0 1 0 -5.8 0Z"
+      />
     </svg>
   );
 }
