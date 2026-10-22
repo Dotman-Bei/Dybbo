@@ -89,6 +89,17 @@ export function revertText(e: unknown): string {
   return msg.split("\n")[0].replace(/^The contract function "\w+" reverted\.?\s*/, "").trim() || "Reverted";
 }
 
+async function codeWithRetry(address: Address): Promise<Hex | undefined> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await publicClient.getCode({ address });
+    } catch (e) {
+      if (attempt >= 4) throw e;
+      await new Promise((r) => setTimeout(r, 300 * (attempt + 1)));
+    }
+  }
+}
+
 /** Owners of a range of tokens through Multicall3, and which owners have code (PRD F-DO). */
 export async function ownersRange(from: number, to: number) {
   const ids: number[] = [];
@@ -103,7 +114,13 @@ export async function ownersRange(from: number, to: number) {
     for (const r of res) owners.push((r.status === "success" ? r.result : "0x0000000000000000000000000000000000000000") as Address);
   }
   const unique = [...new Set(owners.map((o) => o.toLowerCase() as Address))];
-  const codes = await Promise.all(unique.map((a) => publicClient.getCode({ address: a }).catch(() => undefined as Hex | undefined)));
+  // A failed read must never pass for "no code": that would show a closed Chog as open. Read in small
+  // groups, retry, and fail the whole call if an address still can't be read.
+  const codes: (Hex | undefined)[] = [];
+  for (let s = 0; s < unique.length; s += 20) {
+    const group = unique.slice(s, s + 20);
+    codes.push(...(await Promise.all(group.map((a) => codeWithRetry(a)))));
+  }
   const contracts = new Set(unique.filter((_, i) => codes[i] && codes[i] !== "0x"));
   return ids.map((id, i) => ({ id, owner: owners[i], ownerIsContract: contracts.has(owners[i].toLowerCase() as Address) }));
 }
