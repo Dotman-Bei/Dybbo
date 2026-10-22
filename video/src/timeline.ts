@@ -24,8 +24,8 @@ export const VO: [string, number][] = [
   ["s08", 34.4],
   ["s09", 44.5],
   ["s10a", 57.2],
-  ["s10b", 59.8],
-  ["s11", 67.8],
+  ["s10b", 59.2],
+  ["s11", 67.4],
   ["s12", 74.8],
   ["s13", 80.8],
   ["s14", 89.0],
@@ -64,12 +64,12 @@ export const SHOTS: ShotCue[] = [
   { t: 47.6, shot: "session-hex" },
   { t: 48.3, shot: "session-haunting" },
   { t: 49.4, shot: "session-haunted" },
-  { t: 50.2, shot: "target", fade: 0.3 },
+  { t: 50.6, shot: "target", fade: 0.3 },
   { t: 56.4, shot: "session-haunted", fade: 0.3 },
-  { t: 58.8, shot: "session-taking" },
-  { t: 59.5, shot: "session-taken" },
-  // 66.6 - 70.0: the timer speed-ramp (RAMP below) runs timer-00 .. timer-41.
-  { t: 70.3, shot: "session-ended" },
+  { t: 58.0, shot: "session-taking" },
+  { t: 58.6, shot: "session-taken" },
+  // 66.8 - 69.6: the timer speed-ramp (RAMP below) runs timer-00 .. timer-41.
+  { t: 69.9, shot: "session-ended" },
   { t: 71.4, shot: "session-expired" },
   { t: 74.2, shot: "me", fade: 0.3 },
   { t: 76.9, shot: "me-claiming" },
@@ -78,7 +78,7 @@ export const SHOTS: ShotCue[] = [
   { t: 81.9, shot: "proof-running" },
   { t: 82.8, shot: "proof-done" },
 ];
-export const RAMP: RampCue = { t0: 66.6, t1: 70.0, shots: timers };
+export const RAMP: RampCue = { t0: 66.8, t1: 69.6, shots: timers };
 
 export const CAMERA: CamCue[] = [
   { t: 29.6, x: 720, y: 450, z: 1, cut: true },
@@ -92,11 +92,11 @@ export const CAMERA: CamCue[] = [
   { t: 43.5, x: 720, y: 450, z: 1, cut: true },
   { t: 44.7, x: 540, y: 640, z: 1.4, d: 1.3 },
   // The mark on the target's page.
-  { t: 50.2, x: 720, y: 560, z: 1.1, cut: true },
-  { t: 51.2, x: 1000, y: 900, z: 1.5, d: 1.8 },
+  { t: 50.6, x: 720, y: 560, z: 1.1, cut: true },
+  { t: 51.5, x: 1000, y: 900, z: 1.5, d: 1.8 },
   // Try to take it.
   { t: 56.4, x: 1080, y: 380, z: 1.35, cut: true },
-  { t: 59.6, x: 1080, y: 470, z: 1.55, d: 1.2 },
+  { t: 58.7, x: 1080, y: 470, z: 1.55, d: 1.2 },
   // The timer running out, then the expired lease.
   { t: 65.8, x: 524, y: 300, z: 1.6, d: 1.0 },
   { t: 70.6, x: 524, y: 440, z: 1.5, d: 0.9 },
@@ -122,11 +122,11 @@ export const CURSOR: CursorCue[] = [
   { t: 47.5, x: 766, y: 720, click: true },
   { t: 48.2, x: 560, y: 781, click: true },
   { t: 48.9, x: 640, y: 812 },
-  { t: 50.2, x: 1100, y: 600 },
-  { t: 51.8, x: 1250, y: 760 },
+  { t: 50.6, x: 1100, y: 600 },
+  { t: 52.0, x: 1250, y: 760 },
   { t: 56.4, x: 1180, y: 560 },
-  { t: 58.7, x: 1108, y: 329, click: true },
-  { t: 59.3, x: 1220, y: 300 },
+  { t: 58.0, x: 1108, y: 329, click: true },
+  { t: 58.6, x: 1220, y: 300 },
   { t: 70.9, x: 252, y: 497, click: true },
   { t: 71.5, x: 420, y: 420 },
   { t: 74.2, x: 1220, y: 560 },
@@ -151,12 +151,12 @@ export const urlFor = (shot: string) =>
 
 // Sound effects: [name, time, volume].
 export const SFX: [string, number, number][] = [
-  ...CURSOR.filter((c) => c.click).map((c): [string, number, number] => ["click", c.t, 0.35]),
+  ...CURSOR.filter((c) => c.click).map((c): [string, number, number] => ["click", c.t, 0.55]),
   ...KEYS.map((t): [string, number, number] => ["key", t, 0.25]),
   ["whoosh", 25.3, 0.18],
   ["pop", 26.3, 0.3],
   ["chime", 49.4, 0.22],
-  ["thud", 59.5, 0.7],
+  ["thud", 58.6, 0.7],
   ["thud", 71.4, 0.45],
   ["chime", 78.0, 0.22],
   ["chime", 82.8, 0.18],

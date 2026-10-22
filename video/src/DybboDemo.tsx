@@ -24,7 +24,7 @@ function musicVolume(frame: number) {
     const a = at - 0.25, b = at + VO_LENGTH[id] + 0.35;
     duck = Math.max(duck, clamp01((t - a) / 0.25) * clamp01((b - t) / 0.4));
   }
-  return 0.42 - 0.28 * duck;
+  return 0.42 - 0.31 * duck;
 }
 
 export function DybboDemo() {

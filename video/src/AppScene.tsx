@@ -11,8 +11,8 @@ const OVERSCROLL = 160; // how far past the window's edge the camera may frame w
 
 function shotAt(t: number): { shot: string; prev?: string; mix: number } {
   if (t >= RAMP.t0 && t < RAMP.t1) {
-    // Speed-ramp: ease in and out of the run, so the clock spins fastest in the middle.
-    const p = easeInOut(clamp01((t - RAMP.t0) / (RAMP.t1 - RAMP.t0)));
+    // Speed-ramp: an even, fast tick through every captured second, so no step reads as a dropped frame.
+    const p = clamp01((t - RAMP.t0) / (RAMP.t1 - RAMP.t0));
     return { shot: RAMP.shots[Math.min(RAMP.shots.length - 1, Math.floor(p * RAMP.shots.length))], mix: 1 };
   }
   let i = -1;
