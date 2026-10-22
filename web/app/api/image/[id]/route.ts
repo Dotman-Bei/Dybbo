@@ -1,12 +1,24 @@
 // Cached Chog art (F-MD-04): Pinata first, then other gateways; resized once and kept on disk.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 import sharp from "sharp";
 import { getChog } from "@/lib/chogs";
 
 const GATEWAYS = ["https://gateway.pinata.cloud/ipfs/", "https://ipfs.filebase.io/ipfs/", "https://ipfs.io/ipfs/", "https://w3s.link/ipfs/"];
 const WIDTHS = [96, 192, 384, 640, 1000];
-const DIR = path.join(process.cwd(), ".cache", "images");
+// Serverless hosts only allow writes to the temp folder, and it doesn't last; the CDN cache in front of
+// this route (immutable, one year) does the real work there. Locally the cache lives in .cache/.
+const DIR = process.env.VERCEL ? path.join(os.tmpdir(), "dybbo-images") : path.join(process.cwd(), ".cache", "images");
+
+async function remember(file: string, buf: Buffer) {
+  try {
+    await mkdir(DIR, { recursive: true });
+    await writeFile(file, buf);
+  } catch {
+    // A read-only or full disk only costs a refetch next time.
+  }
+}
 const inflight = new Map<string, Promise<Buffer>>();
 
 // Public gateways rate-limit bursts; a browse page asks for 60 at once.
@@ -34,8 +46,7 @@ async function original(id: number, cid: string): Promise<Buffer> {
       const res = await slot(() => fetch(gw + cid, { signal: AbortSignal.timeout(20000) }));
       if (res.ok) {
         const buf = Buffer.from(await res.arrayBuffer());
-        await mkdir(DIR, { recursive: true });
-        await writeFile(file, buf);
+        await remember(file, buf);
         return buf;
       }
     } catch {}
@@ -50,7 +61,7 @@ async function sized(id: number, cid: string, w: number): Promise<Buffer> {
     return await readFile(file);
   } catch {}
   const buf = await sharp(await original(id, cid)).resize(w, w).webp({ quality: 82 }).toBuffer();
-  await writeFile(file, buf);
+  await remember(file, buf);
   return buf;
 }
 
