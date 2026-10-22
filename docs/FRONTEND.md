@@ -193,7 +193,7 @@ Copy below is final unless marked *sample*. Numbers in copy come from PRD consta
   2. **Where does my fee go?** — All of it goes into that Chog's escrow. Whoever holds the Chog when they claim takes it. Dybbo charges no fee and has no admin.
   3. **What if the Chog is sold while I hold it?** — Your control ends in the block it changes hands, and the next haunt reverts with OwnerChanged. There are no refunds: leases last ten minutes at most, and the terms are shown before you pay.
   4. **I hold a Chog. Did I agree to this?** — Every Chog in a regular wallet is open at 0.01 MON a minute from the first block, so it earns without a sign-up. You can set your own price or close it at any time from My Chogs.
-  5. **Why is this Chog closed?** — Chogs held by contracts, such as vaults, marketplaces, Safes and EIP-7702 wallets, start closed, so nobody can borrow one for a block to drain its escrow. The holder can open it.
+  5. **Why is this Chog closed?** — Chogs held by contracts, such as vaults, marketplaces and Safes, start closed, so nobody can borrow one for a block to drain its escrow. The holder can open it.
   6. **Do marks change my NFT?** — No. Marks are Dybbo data shown beside the art. The image and metadata never change, and every mark is gone after 24 hours.
   7. **What happens to unclaimed fees after a sale?** — They stay with the token, so the buyer can claim them. Prices and opt-outs do not carry over: the buyer starts on the defaults.
   8. **Is this made by the Chog team?** — No. Dybbo is an unofficial community project built for Chogathon 2026. Chog art is shown with permission and never altered.
@@ -263,7 +263,7 @@ Archetype **no sidebar** (top bar over a centred column; the dealt icon rail is 
 - **Escrow card**: **0.21 MON** waiting (36px), **from 21 minutes of possession across 3 Chogs**; primary **Claim all** (`claimMany`), with the per-token split listed in the card.
 - **Your Chogs** table: art 48px, `#1462`, status, price (`0.01 default` / `0.05 yours`), escrow (right-aligned), marks 24 h, action **Edit terms**. Phone: two-line rows.
 - **Marks on your Chogs**: rows **Hex on #1462 by #311, possessed · 12 min ago** with action **Strike back** (opens `/chog/[yourId]` holder haunt with the source preselected).
-- Contract holder notice: **Your wallet has code (a contract or EIP-7702 wallet), so your Chogs start closed. Open them in Edit terms.**
+- Contract holder notice: **This wallet is a contract, so its Chogs start closed. Open them under Edit terms.** (EIP-7702 smart-account wallets count as wallets and start open.)
 - Not connected: **Connect a wallet to see the Chogs it holds.** Holds none: **This wallet holds no Chog Genesis. You can still possess one.** → `/chogs`.
 
 ### 3.7 `/me/possessions`

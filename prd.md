@@ -277,7 +277,7 @@ $CHOG can be the fee currency if the team prefers it (section 20). MON works the
 |---|---|
 | F-DO-01 | A Chog whose `ownerOf` is an account without code (EOA) is open by default with no sign-up. |
 | F-DO-02 | A Chog whose `ownerOf` has code (vaults, pools, marketplace escrows, Safes) is **closed by default** and can be opened by that holder through `setTerms` (`DECISION`). Reason: a contract that holds Chogs and lends them out could let someone borrow a Chog for one transaction to harvest its escrow, the same pattern used to claim 60,564 APE with five borrowed apes (https://www.theblock.co/post/138410/someone-borrowed-5-bored-apes-to-claim-1-1-million-of-ape-tokens; pain P-12). |
-| F-DO-03 | Known side effect: EIP-7702-delegated EOAs have code and fall under F-DO-02. They can open with `setTerms`. Stated in the FAQ. |
+| F-DO-03 | EIP-7702-delegated EOAs (code is exactly the 23-byte designator `0xef0100` ‖ address) count as EOAs and are open by default (`DECISION`, 2026-10-22). On mainnet, 789 of the 791 Chogs held by addresses with code sat in 7702 wallets; treating them as contracts left 40% of the collection closed. Real contracts still fall under F-DO-02. |
 
 ### 7.7 Activity and counters
 
@@ -512,7 +512,7 @@ Visual design for every page: `frontend.md`. Below: purpose, data, actions and s
 | `/me/possessions` | My possessions | A possessor's active and past leases | Active leases with countdowns (from `leaseOf` for tokens seen in this wallet's `Possessed` events or local session state); recent haunts by this wallet | Resume session; possess again | Required |
 | `/proof` | The claim | Let anyone check the claim without trusting the builder | The claim sentence; Dybbo address with MonadScan links (verified source, Read tab); live `isApprovedForAll(<chosen holder>, Dybbo)`; the list of external calls the contract makes (only `ownerOf` and owner code check); links to the tests in the repo | Pick any token and run the three revert checks as simulations: transfer by a possessor, haunt after expiry, claim by a non-owner | Optional (simulations work from any address) |
 | `/judges` | Judge guide | Step-by-step testing without a Chog | What to do in under 5 minutes; cost (≈ 0.01 MON fee for 1 minute plus gas); how to get MON on Monad; what each revert proves; where the video and repo are | Links into `/chog/[id]` with a suggested open token, `/proof` | Not needed to read |
-| `/about` | About and FAQ | Rules and edge cases in plain words | How fees, escrow and claims work; no refunds; terms reset on sale; contract holders closed by default (and EIP-7702 note); marks are not part of the NFT; marks expire after 24 h; unofficial community project, not by the Chog team; Chog art shown with permission and never altered; Dybbo and its builder never hold or move any Chog; contract has no admin | — | Not needed |
+| `/about` | About and FAQ | Rules and edge cases in plain words | How fees, escrow and claims work; no refunds; terms reset on sale; contract holders closed by default (EIP-7702 wallets count as wallets); marks are not part of the NFT; marks expire after 24 h; unofficial community project, not by the Chog team; Chog art shown with permission and never altered; Dybbo and its builder never hold or move any Chog; contract has no admin | — | Not needed |
 | `/404` | Not found | Unknown route or token ID out of 1–1,969 | Message and link to `/chogs` | — | — |
 | Error boundary | Error | RPC or gateway failure | What failed (RPC, IPFS) and retry | Retry; switch RPC | — |
 
