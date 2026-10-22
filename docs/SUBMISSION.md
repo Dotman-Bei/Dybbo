@@ -1,9 +1,8 @@
 # Chogathon 2026 submission
 
-Fields of the submission form (PRD §2.5), ready to paste. Three values are still to fill:
+Fields of the submission form (PRD §2.5), ready to paste. Two values are still to fill:
 
 - `{APP_URL}`: the production URL once the app is deployed
-- `{REPO_URL}`: the public GitHub repo
 - `{VIDEO_URL}`: the unlisted YouTube or Google Drive link to the demo video
 
 Usage numbers under "What's next" are read from the contract's `stats()` just before submitting (command at the end).
@@ -84,7 +83,7 @@ Solidity 0.8.30 and Foundry (unit, fuzz and fork tests; gas measured on Monad wi
 
 ## GitHub repo
 
-{REPO_URL}
+https://github.com/Dotman-Bei/Dybbo
 
 ## Judge access instructions
 
