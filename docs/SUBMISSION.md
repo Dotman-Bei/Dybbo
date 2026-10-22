@@ -4,7 +4,7 @@ Fields of the submission form (PRD §2.5), ready to paste. One value is still to
 
 - `{VIDEO_URL}`: the unlisted YouTube or Google Drive link to the demo video
 
-Usage numbers under "What's next" are read from the contract's `stats()` just before submitting (command at the end).
+Usage numbers under "What's next" were read from the contract's `stats()`; re-run the command at the end just before submitting and update them.
 
 ---
 
@@ -121,16 +121,16 @@ Without a wallet, every page is readable, and /me?address=0x… shows any holder
 
 ## What's next and usage
 
-Usage is read from the contract (`stats()`) on {DATE}:
+Usage is read from the contract (`stats()`) on 2026-10-22, after the first mainnet run:
 
 | | |
 |---|---|
-| Possessions | {POSSESSIONS} |
-| Distinct possessors | {POSSESSORS} |
-| Distinct Chogs possessed | {TOKENS} |
-| Haunts | {HAUNTS} |
-| MON paid into escrow | {PAID} |
-| MON claimed by holders | {CLAIMED} |
+| Possessions | 1 |
+| Distinct possessors | 1 |
+| Distinct Chogs possessed | 1 |
+| Haunts | 2 |
+| MON paid into escrow | 0.05 MON |
+| MON claimed by holders | 0 MON (waiting for #1462's holder) |
 
 Next:
 
