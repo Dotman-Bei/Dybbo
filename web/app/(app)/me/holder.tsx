@@ -93,7 +93,7 @@ export function Holder({ viewAddress }: { viewAddress: Address | null }) {
 
       {held.data?.contract && (
         <p className="notice me__notice">
-          This wallet has code (a contract or an EIP-7702 wallet), so its Chogs start closed. Open them under Edit terms.
+          This wallet is a contract, so its Chogs start closed. Open them under Edit terms.
         </p>
       )}
 

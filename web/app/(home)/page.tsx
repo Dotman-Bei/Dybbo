@@ -207,7 +207,7 @@ const FAQ: [string, string][] = [
   ["Where does my fee go?", "All of it goes into that Chog’s escrow. Whoever holds the Chog when they claim takes it. Dybbo charges no fee and has no admin."],
   ["What if the Chog is sold while I hold it?", "Your control ends in the block it changes hands, and the next haunt reverts with OwnerChanged. There are no refunds: leases last ten minutes at most, and the terms are shown before you pay."],
   ["I hold a Chog. Did I agree to this?", "Every Chog in a regular wallet is open at 0.01 MON a minute from the first block, so it earns without a sign-up. You can set your own price or close it at any time from My Chogs."],
-  ["Why is this Chog closed?", "Chogs held by contracts, such as vaults, marketplaces, Safes and EIP-7702 wallets, start closed, so nobody can borrow one for a block to drain its escrow. The holder can open it."],
+  ["Why is this Chog closed?", "Chogs held by contracts, such as vaults, marketplaces and Safes, start closed, so nobody can borrow one for a block to drain its escrow. The holder can open it."],
   ["Do marks change my NFT?", "No. Marks are Dybbo data shown beside the art. The image and metadata never change, and every mark is gone after 24 hours."],
   ["What happens to unclaimed fees after a sale?", "They stay with the token, so the buyer can claim them. Prices and opt-outs do not carry over: the buyer starts on the defaults."],
   ["Is this made by the Chog team?", "No. Dybbo is an unofficial community project built for Chogathon 2026. Chog art is shown with permission and never altered."],

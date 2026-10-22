@@ -28,8 +28,9 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
     title: "Closed by default",
     body: (
       <p>
-        Chogs held by contracts, such as vaults, marketplaces and Safes, start closed. Otherwise someone could borrow one for a single transaction and drain its escrow. Wallets using
-        EIP-7702 delegation have code too, so they also start closed; their holder can open them under Edit terms.
+        Chogs held by contracts, such as vaults, marketplaces and Safes, start closed. Otherwise someone could borrow one for a single transaction and drain its escrow. Smart-account
+        wallets using EIP-7702 delegation are still one person&rsquo;s wallet, so they start open like any other. A contract holder can open its
+        Chogs under Edit terms.
       </p>
     ),
   },
