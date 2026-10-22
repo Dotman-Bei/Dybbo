@@ -2,6 +2,9 @@
 import { ownersRange } from "@/lib/chain";
 import { SUPPLY } from "@/lib/config";
 
+// Reading 1,969 owners and their code takes ~20 s on a cold start.
+export const maxDuration = 60;
+
 type Row = { id: number; owner: string; ownerIsContract: boolean };
 let cache: { at: number; rows: Row[] } | null = null;
 let pending: Promise<Row[]> | null = null;
