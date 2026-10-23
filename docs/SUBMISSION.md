@@ -74,6 +74,62 @@ No Chog needed. https://dybbo.vercel.app/judges walks through the full loop with
 
 Contract: 0x908D8899795072985e35CB86dA3Aff88CE4e72e9 on Monad mainnet, source verified on Sourcify. 53 Foundry unit tests, plus 3 fork tests against the real Chog Genesis.
 
+## Short versions of the description
+
+For places that ask for less. Same facts as the full description above.
+
+### About 600 words
+
+```text
+Dybbo: possess any Chog for a few minutes
+
+About 982 people own the 1,969 Chog Genesis. Monad has more than 4.3 million wallets. Everyone in between gets a guest mode in holder-gated Chog apps: they watch, someone else plays.
+
+Lending looks like the fix, but Chog Genesis has no rental role. It means an escrow, a wrapper, or setApprovalForAll, all of which give a contract power to move the NFT. That power is how NFTs get lost: in one 2026 sweep, a single forgotten approval cost 3,033 wallets 25,994 NFTs. So we asked: can someone without a Chog control one for a while, while the holder gives up nothing?
+
+WHAT IT DOES
+
+Dybbo, named after the dybbuk (a folklore spirit that borrows a body), lets anyone possess any Chog for 1 to 10 minutes at its price per minute (0.01 MON by default). The full fee goes into that Chog's escrow. The NFT never moves; a possession is only a record in the Dybbo contract.
+
+While the timer runs, you haunt: leave Boo, Slime or Hex on another Chog, shown beside its art for 24 hours and signed "by #1462, possessed". One haunt every 15 seconds, one per target per day, eight live marks per Chog. Holders haunt with their own Chogs without a lease, so the haunted can strike back. Holders never sign up: every Chog in a wallet is open from the first block, and whoever holds it when they claim takes its escrow.
+
+HOW IT HOLDS
+
+The contract touches Chog Genesis only to read ownerOf. It has no code path to approve or transfer, and a test scans its bytecode to prove it. Every haunt re-reads ownerOf in the same transaction, so control ends in the block the lease expires (LeaseExpired) or the Chog changes hands (OwnerChanged). Escrow is keyed to the token and pays only its current owner, so fees follow the Chog through a sale. Chogs held by contracts start closed, so nobody can borrow one for a block to drain its escrow. That still leaves 1,968 of 1,969 Chogs open. No owner, no pause, no upgrade, no protocol fee.
+
+You don't have to trust us. "Try to take it" asks the real Chog Genesis to move the Chog to the possessor, and it reverts with ERC721InsufficientApproval. After the timer, a haunt reverts with LeaseExpired. The /proof page runs the checks free against mainnet.
+
+WHAT'S NEW
+
+Every lending method today hands a contract power over the NFT. Dybbo lends control without handing over any power, checks ownership on chain at every action instead of on a server timer, opens the whole collection by default, and ties fees to the token. It needs Monad: 300 ms blocks and sub-cent fees make a per-action owner check practical.
+
+You could own an NFT or look at one; now you can briefly be one. A live lease is public (leaseOf), so other Chog games could let possessors play as a Chog instead of spectating.
+
+WHY CHOG
+
+Remove the NFT and nothing is left. The Chog is the body possessed, the payee (escrow keyed to its ID), and the off switch (a lease dies when ownerOf changes). Chog's lore is a mischievous kid who causes chaos; Dybbo lets anyone play that role.
+
+WHY PEOPLE RETURN
+
+Being haunted invites a strike-back that costs only gas. Marks expire in 24 hours, so staying visible means coming back. Holder fees keep accruing until claimed. Retention isn't proven yet; the live contract's public stats() counters will show it.
+
+Try it with no Chog and about 0.1 MON: https://dybbo.vercel.app/judges. Contract 0x908D8899795072985e35CB86dA3Aff88CE4e72e9 on Monad mainnet, verified on Sourcify.
+```
+
+### About 300 words (no headings)
+
+```text
+About 982 people own the 1,969 Chog Genesis, while Monad has more than 4.3 million wallets. Everyone else gets a guest mode in holder-gated Chog apps. Lending could fix that, but Chog Genesis has no rental role, so lending means an escrow, a wrapper or setApprovalForAll, each giving a contract power to move the NFT. That power is how NFTs get lost: one forgotten approval cost 3,033 wallets 25,994 NFTs in a single 2026 sweep.
+
+Dybbo, named after the dybbuk, a folklore spirit that borrows a body, lets anyone possess any Chog for 1 to 10 minutes at 0.01 MON a minute by default. The whole fee goes into that Chog's escrow, and the NFT never moves. While the timer runs, you haunt other Chogs with Boo, Slime or Hex, a mark shown beside their art for 24 hours and signed "by #1462, possessed". Holders haunt back with their own Chogs, never sign up, and whoever holds a Chog when they claim takes its escrow.
+
+The contract only reads ownerOf from Chog Genesis and has no code path to approve or transfer. Every haunt re-checks ownership in the same transaction, so control ends in the block the lease expires or the Chog changes hands. No owner, no pause, no upgrade, no protocol fee. In the app, "Try to take it" asks the real Chog Genesis to move the Chog, and it refuses with ERC721InsufficientApproval.
+
+That is what's new: control without handing over power, enforced at every action on Monad, where 300 ms blocks and sub-cent fees make it practical. Remove the Chog and nothing is left; it is the body, the payee and the off switch. Marks expire, haunts invite strike-backs and fees keep accruing, which gives people reasons to return.
+
+Try it with no Chog: https://dybbo.vercel.app/judges
+```
+
 ## Demo video
 
 {VIDEO_URL} (script: [VIDEO.md](VIDEO.md))
