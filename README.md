@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="web/public/brand/dybbo-logo-on-dark.svg">
+  <img src="web/public/brand/dybbo-logo.svg" alt="Dybbo" width="320">
+</picture>
+
 # Dybbo
 
 **Possess any Chog Genesis for a few paid minutes on Monad. No approval, no custody. The fee waits in escrow for its holder.**
